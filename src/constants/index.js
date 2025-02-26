@@ -23,7 +23,10 @@ import {
     summiz,
     tailwindcss,
     threads,
-    typescript
+    typescript,
+    java,
+    python,
+    aws
 } from "../assets/icons";
 
 export const skills = [
@@ -63,21 +66,6 @@ export const skills = [
         type: "Database",
     },
     {
-        imageUrl: motion,
-        name: "Motion",
-        type: "Animation",
-    },
-    {
-        imageUrl: mui,
-        name: "Material-UI",
-        type: "Frontend",
-    },
-    {
-        imageUrl: nextjs,
-        name: "Next.js",
-        type: "Frontend",
-    },
-    {
         imageUrl: nodejs,
         name: "Node.js",
         type: "Backend",
@@ -88,77 +76,85 @@ export const skills = [
         type: "Frontend",
     },
     {
-        imageUrl: redux,
-        name: "Redux",
-        type: "State Management",
-    },
-    {
-        imageUrl: sass,
-        name: "Sass",
-        type: "Frontend",
-    },
-    {
-        imageUrl: tailwindcss,
-        name: "Tailwind CSS",
-        type: "Frontend",
-    },
-    {
         imageUrl: typescript,
         name: "TypeScript",
         type: "Frontend",
+    },
+    {
+        imageUrl: java,
+        name: "Java",
+        type: "Backend",
+    },
+    {
+        imageUrl: python,
+        name: "Python",
+        type: "Backend",
+    },
+    {
+        imageUrl: aws,
+        name: "AWS",
+        type: "Cloud",
     }
 ];
 
 export const experiences = [
     {
-        title: "React.js Developer",
-        company_name: "Starbucks",
-        icon: starbucks,
-        iconBg: "#accbe1",
-        date: "March 2020 - April 2021",
+        title: "Software development Engineer",
+        company_name: "Playvox",
+        icon: meta,
+        iconBg: "#a2d2ff",
+        date: "Jun 2022 - Abr 2024",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
+            "Design, code and maintain backend code in Python and Node for contact center industry.",
             "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
+            "Implementing IA models and integrating them with APIs, and data flows",
             "Participating in code reviews and providing constructive feedback to other developers.",
+            "Stack: Python(Django and plain)+AWS Lambda+ AWS RDS + AWS Bedrock(IA)",
         ],
     },
     {
-        title: "React Native Developer",
-        company_name: "Tesla",
+        title: "Leader Reasearch & Development",
+        company_name: "IAS Software",
+        icon: starbucks,
+        iconBg: "#accbe1",
+        date: "July 2019 - May 2022",
+        points: [
+            "Design and build SaaS(software as a service) products, lead a software development team, build, test, reinforce SaaS and manage development teams across projects.",
+            "Managing teams across products, and teach junior developers.",
+        ],
+    },
+    {
+        title: "Software development Engineer",
+        company_name: "IAS Software",
         icon: tesla,
         iconBg: "#fbc3bc",
-        date: "Jan 2021 - Feb 2022",
+        date: "Jul 2017 - Jul 2019",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
+            "analyze, design, code and maintain industrial complex software systems in the insurance sector",
+            "Consultancy for banking systems regarding frontend and backend architecture for new features",
             "Implementing responsive design and ensuring cross-browser compatibility.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
         ],
     },
     {
         title: "Web Developer",
-        company_name: "Shopify",
+        company_name: "On24",
         icon: shopify,
         iconBg: "#b7e4c7",
-        date: "Jan 2022 - Jan 2023",
+        date: "March 2017 - Jun 2017",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
+            "Developing and maintaining web applications using Java SE, Java EE and other technologies",
             "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
             "Participating in code reviews and providing constructive feedback to other developers.",
         ],
     },
     {
-        title: "Full stack Developer",
-        company_name: "Meta",
+        title: "Research & Development engineer",
+        company_name: "Vega Energy",
         icon: meta,
         iconBg: "#a2d2ff",
-        date: "Jan 2023 - Present",
+        date: "Feb 2014 - Mar 2017",
         points: [
-            "Developing and maintaining web applications using React.js and other related technologies.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
+            "Research and development of product prototypes related to electronic and mechanic devices in telemetry and the measurement industry. The main tasks included everything from designing electronic schemes, prototypes to coding and deploying firmware, and software in a complex and productive engineering team",
             "Participating in code reviews and providing constructive feedback to other developers.",
         ],
     },
@@ -173,12 +169,12 @@ export const socialLinks = [
     {
         name: 'GitHub',
         iconUrl: github,
-        link: 'https://github.com/YourGitHubUsername',
+        link: 'https://github.com/caaguirreec',
     },
     {
         name: 'LinkedIn',
         iconUrl: linkedin,
-        link: 'https://www.linkedin.com/in/YourLinkedInUsername',
+        link: 'https://www.linkedin.com/in/c%C3%A9sar-aguirre-902220158',
     }
 ];
 
@@ -186,43 +182,36 @@ export const projects = [
     {
         iconUrl: pricewise,
         theme: 'btn-back-red',
-        name: 'Amazon Price Tracker',
-        description: 'Developed a web application that tracks and notifies users of price changes for products on Amazon, helping users find the best deals.',
-        link: 'https://github.com/adrianhajdin/pricewise',
+        name: 'Pioneer',
+        description: 'Creation from scratch of a controlled mechanical car with a Raspberry Pi, a camera, and a web interface to control it.',
+        link: 'https://github.com/caaguirreec/PI-oneer',
     },
     {
         iconUrl: threads,
         theme: 'btn-back-green',
-        name: 'Full Stack Threads Clone',
-        description: 'Created a full-stack replica of the popular discussion platform "Threads," enabling users to post and engage in threaded conversations.',
-        link: 'https://github.com/adrianhajdin/threads',
+        name: 'Audiovisual Loop Station',
+        description: 'Pedal loop interface to mix microphone sound waves, recording and save them to create a compound sounds.',
+        link: 'https://github.com/caaguirreec/AudioVisualLoopStation',
     },
     {
         iconUrl: car,
         theme: 'btn-back-blue',
-        name: 'Car Finding App',
-        description: 'Designed and built a mobile app for finding and comparing cars on the market, streamlining the car-buying process.',
-        link: 'https://github.com/adrianhajdin/project_next13_car_showcase',
+        name: 'Bikey App',
+        description: 'Web and mobile app for cyclists to increase safety across urban areas by providing real-time tracking information.',
+        link: 'https://www.bikey.app/#/landing',
     },
     {
         iconUrl: snapgram,
         theme: 'btn-back-pink',
-        name: 'Full Stack Instagram Clone',
-        description: 'Built a complete clone of Instagram, allowing users to share photos and connect with friends in a familiar social media environment.',
-        link: 'https://github.com/adrianhajdin/social_media_app',
+        name: 'Telliou',
+        description: 'Virtual and programatic call centers automated designed for small business.',
+        link: 'https://www.telliou.com/',
     },
     {
         iconUrl: estate,
         theme: 'btn-back-black',
-        name: 'Real-Estate Application',
-        description: 'Developed a web application for real estate listings, facilitating property searches and connecting buyers with sellers.',
-        link: 'https://github.com/adrianhajdin/projects_realestate',
-    },
-    {
-        iconUrl: summiz,
-        theme: 'btn-back-yellow',
-        name: 'AI Summarizer Application',
-        description: 'App that leverages AI to automatically generate concise & informative summaries from lengthy text content, or blogs.',
-        link: 'https://github.com/adrianhajdin/project_ai_summarizer',
+        name: 'Houndter',
+        description: 'Scraping tool for data analysis on social media.',
+        link: 'https://houndter.com/',
     }
 ];

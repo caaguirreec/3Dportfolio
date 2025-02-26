@@ -25,6 +25,9 @@ import threads from './threads.svg'
 import arrow from './arrow.svg'
 import contact from './contact.svg'
 import soundon from './soundon.png'
+import aws from './aws.svg'
+import java from './java.svg'
+import python from './python.svg'
 import soundoff from './soundoff.png'
 
 export {
@@ -55,5 +58,8 @@ export {
     arrow,
     contact,
     soundon,
-    soundoff
+    soundoff,
+    aws,
+    java,
+    python
 }
