@@ -58,7 +58,6 @@ export function Cyclist({
   
         // Update the island's rotation based on the mouse/touch movement
         cyclistRef.current.rotation.y += delta * 0.01 * Math.PI;
-  
         // Update the reference for the last clientX position
         lastX.current = clientX;
   
@@ -69,6 +68,20 @@ export function Cyclist({
   
     // Handle keydown events
     const handleKeyDown = (event) => {
+      if (event.key === "ArrowUp") {
+        if (!isRotating) setIsRotating(true);
+  
+        cyclistRef.current.rotation.z += 0.01;//0.005 * Math.PI;
+        cyclistRef.current.rotation.x -= 0.01;//0.005 * Math.PI;
+        rotationSpeed.current = 0.007;
+      }
+      if (event.key === "ArrowDown") {
+        if (!isRotating) setIsRotating(true);
+  
+        cyclistRef.current.rotation.z -= 0.01;//0.005 * Math.PI;
+        cyclistRef.current.rotation.x -= 0.01;//0.005 * Math.PI;
+        rotationSpeed.current = 0.007;
+      }
       if (event.key === "ArrowLeft") {
         if (!isRotating) setIsRotating(true);
   
@@ -203,7 +216,9 @@ export function Cyclist({
     return (
         <mesh ref={cyclistRef}
             geometry={nodes.mesh_0.geometry}
-            material={nodes.mesh_0.material}>
+            material={nodes.mesh_0.material}
+            {...props}
+            >
 
       </mesh>
     );

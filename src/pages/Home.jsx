@@ -57,11 +57,11 @@ const Home = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
-      screenScale = [0.9, 0.9, 0.9];
-      screenPosition = [0, -6.5, -43.4];
+      screenScale = [1.5, 1.5, 1.5];
+      screenPosition = [0.1, -0.3, 2];
     } else {
-      screenScale = [1.2, 1.2, 1.2];
-      screenPosition = [0, -26.5, -43.4];
+      screenScale = [1.5, 1.5, 1.5];
+      screenPosition = [-0.1, -0.3, 2];
     }
     return [screenScale, screenPosition];
   };
@@ -122,7 +122,7 @@ const Home = () => {
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
             position={cyclistPosition}
-            rotation={[0.1, 4.7077, 0]}
+            rotation={[0.1, 0.7077, 0]}
             scale={cyclistScale}
           />
         </Suspense>
