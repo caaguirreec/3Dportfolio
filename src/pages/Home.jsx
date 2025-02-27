@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import sakura from "../assets/sakura.mp3";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
-import { Bird, Cyclist, Island, Plane, Sky } from "../models";
+import { Tulia, Cyclist, Island, Plane, Sky } from "../models";
 
 const Home = () => {
   const audioRef = useRef(new Audio(sakura));
@@ -25,7 +25,7 @@ const Home = () => {
     };
   }, [isPlayingMusic]);
 
-  const adjustBiplaneForScreenSize = () => {
+  const adjustTuliaForScreenSize = () => {
     let screenScale, screenPosition;
 
     // If screen width is less than 768px, adjust the scale and position
@@ -33,8 +33,8 @@ const Home = () => {
       screenScale = [1.5, 1.5, 1.5];
       screenPosition = [0, -1.5, 0];
     } else {
-      screenScale = [3, 3, 3];
-      screenPosition = [0, -4, -4];
+      screenScale = [2.2, 2.2, 2.2];
+      screenPosition = [-3, -4, -4];
     }
 
     return [screenScale, screenPosition];
@@ -67,7 +67,7 @@ const Home = () => {
   };
 
 
-  const [biplaneScale, biplanePosition] = adjustBiplaneForScreenSize();
+  const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
   const [islandScale, islandPosition] = adjustIslandForScreenSize();
   const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
 
@@ -101,8 +101,14 @@ const Home = () => {
           
          
           <Sky isRotating={isRotating} />
+          <Tulia
+            isRotating={isRotating}
+            position={tuliaPosition}
+            rotation={[0.1, 0.7077, 0]}
+            scale={tuliaScale}
+          />
           {/*
-           <Bird />
+           
           <Island
             isRotating={isRotating}
             setIsRotating={setIsRotating}
@@ -113,9 +119,9 @@ const Home = () => {
           />
           <Plane
             isRotating={isRotating}
-            position={biplanePosition}
+            position={tuliaPosition}
             rotation={[0, 20.1, 0]}
-            scale={biplaneScale}
+            scale={tuliaScale}
           />*/}
           <Cyclist 
             isRotating={isRotating}
