@@ -30,8 +30,8 @@ const Home = () => {
 
     // If screen width is less than 768px, adjust the scale and position
     if (window.innerWidth < 768) {
-      screenScale = [1.5, 1.5, 1.5];
-      screenPosition = [0, -1.5, 0];
+      screenScale = [2.2, 2.2, 2.2];
+      screenPosition = [-3, -4, -4];
     } else {
       screenScale = [2.2, 2.2, 2.2];
       screenPosition = [-3, -4, -4];
