@@ -113,9 +113,9 @@ const Home = () => {
             rotation={[0.1, 0.7077, 0]}
             scale={tuliaScale}
           />
-          {/*
+          
            
-          <Island
+          {/*<Island
             isRotating={isRotating}
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
