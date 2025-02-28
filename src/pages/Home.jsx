@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import sakura from "../assets/sakura.mp3";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
-import { Tulia, Cyclist, Island, Plane, Sky } from "../models";
+import { Tulia, Cyclist, Island, Camping, Sky } from "../models";
 
 const Home = () => {
   const audioRef = useRef(new Audio(sakura));
@@ -40,15 +40,15 @@ const Home = () => {
     return [screenScale, screenPosition];
   };
 
-  const adjustIslandForScreenSize = () => {
+  const adjustCampingForScreenSize  = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
       screenScale = [0.9, 0.9, 0.9];
       screenPosition = [0, -6.5, -43.4];
     } else {
-      screenScale = [1, 1, 1];
-      screenPosition = [0, -6.5, -43.4];
+      screenScale = [5.5, 5.5, 5.5];
+      screenPosition = [19, -7.5, -53.4];
     }
 
     return [screenScale, screenPosition];
@@ -68,7 +68,7 @@ const Home = () => {
 
 
   const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
-  const [islandScale, islandPosition] = adjustIslandForScreenSize();
+  const [campingScale, campingPosition] = adjustCampingForScreenSize();
   const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
 
   return (
@@ -101,6 +101,12 @@ const Home = () => {
           
          
           <Sky isRotating={isRotating} />
+          <Camping 
+            isRotating={isRotating} 
+            position={campingPosition}
+            rotation={[0.3, 17.7077, 0.1]}
+            scale={campingScale}
+          />
           <Tulia
             isRotating={isRotating}
             position={tuliaPosition}
@@ -113,9 +119,9 @@ const Home = () => {
             isRotating={isRotating}
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
-            position={islandPosition}
+            position={campingPosition}
             rotation={[0.1, 4.7077, 0]}
-            scale={islandScale}
+            scale={campingScale}
           />
           <Plane
             isRotating={isRotating}
