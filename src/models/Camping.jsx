@@ -11,7 +11,7 @@
 
 import { a } from "@react-spring/three";
 import { useEffect, useRef } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
 import campingScene from "../assets/3d/camping.glb";
@@ -26,7 +26,8 @@ export function Camping({
   const campingRef = useRef();
   // Get access to the Three.js renderer and viewport
   const { gl, viewport } = useThree();
-  const camping = useGLTF(campingScene);
+  const {scene, animations} = useGLTF(campingScene);
+  const { actions } = useAnimations(animations, campingRef);
 
   // Use a ref for the last mouse x position
   const lastX = useRef(0);
@@ -132,6 +133,7 @@ export function Camping({
 
   useEffect(() => {
     // Add event listeners for pointer and keyboard events
+    actions["Take 001"].play();
     const canvas = gl.domElement;
     canvas.addEventListener("pointerdown", handlePointerDown);
     canvas.addEventListener("pointerup", handlePointerUp);
@@ -212,11 +214,8 @@ export function Camping({
   });
 
   return (
-    // {Island 3D model from: https://sketchfab.com/3d-models/foxs-islands-163b68e09fcc47618450150be7785907}
     <mesh {...props} ref={campingRef}>
-    // use the primitive element when you want to directly embed a complex 3D
-    model or scene
-    <primitive object={camping.scene} />
+        <primitive object={scene} />
   </mesh>
   );
 }

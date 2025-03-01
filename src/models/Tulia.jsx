@@ -4,7 +4,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 
 import tuliaScene from "../assets/3d/wolf.glb";
 
-// 3D Model from: https://sketchfab.com/3d-models/stylized-ww1-tulia-c4edeb0e410f46e8a4db320879f0a1db
+
 export function Tulia({     
     isRotating,
     setIsRotating,
@@ -18,6 +18,7 @@ export function Tulia({
   const { scene, animations } = useGLTF(tuliaScene);
   // Get animation actions associated with the tulia
   const { actions } = useAnimations(animations, ref);
+  const rotationSpeed = useRef(0);
   // Handle pointer (mouse or touch) down event
   const handlePointerDown = (event) => {
     event.stopPropagation();
@@ -42,11 +43,7 @@ export function Tulia({
         event.stopPropagation();
         event.preventDefault();
         if (isRotating) {
-          // If rotation is enabled, calculate the change in clientX position
-          const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-    
-          // calculate the change in the horizontal position of the mouse cursor or touch input,
-          // relative to the viewport's width
+          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
           const delta = (clientX - lastX.current) / viewport.width;
     
           // Update the island's rotation based on the mouse/touch movement
@@ -60,29 +57,15 @@ export function Tulia({
       };
  // Handle keydown events
  const handleKeyDown = (event) => {
-    if (event.key === "ArrowUp") {
-      if (!isRotating) setIsRotating(true);
-
-      ref.current.rotation.z += 0.01;//0.005 * Math.PI;
-      ref.current.rotation.x -= 0.01;//0.005 * Math.PI;
-      rotationSpeed.current = 0.007;
-    }
-    if (event.key === "ArrowDown") {
-      if (!isRotating) setIsRotating(true);
-
-      ref.current.rotation.z -= 0.01;//0.005 * Math.PI;
-      ref.current.rotation.x -= 0.01;//0.005 * Math.PI;
-      rotationSpeed.current = 0.007;
-    }
     if (event.key === "ArrowLeft") {
       if (!isRotating) setIsRotating(true);
 
-      ref.current.rotation.y += 0.005 * Math.PI;
+      ref.current.rotation.y -= 0.0005 * Math.PI;
       rotationSpeed.current = 0.007;
     } else if (event.key === "ArrowRight") {
       if (!isRotating) setIsRotating(true);
 
-      ref.current.rotation.y -= 0.005 * Math.PI;
+      ref.current.rotation.y += 0.0005 * Math.PI;
       rotationSpeed.current = -0.007;
     }
   };

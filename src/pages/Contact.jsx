@@ -2,7 +2,7 @@ import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef, useState } from "react";
 
-import { Fox } from "../models";
+import { Tulia } from "../models";
 import useAlert from "../hooks/useAlert";
 import { Alert, Loader } from "../components";
 
@@ -157,11 +157,11 @@ const Contact = () => {
           />
 
           <Suspense fallback={<Loader />}>
-            <Fox
+            <Tulia
               currentAnimation={currentAnimation}
-              position={[0.5, 0.35, 0]}
+              position={[0.5, -1.35, 0]}
               rotation={[12.629, -0.6, 0]}
-              scale={[0.5, 0.5, 0.5]}
+              scale={[2.3, 2.3, 2.3]}
             />
           </Suspense>
         </Canvas>

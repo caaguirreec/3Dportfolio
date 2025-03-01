@@ -106,8 +106,11 @@ const Home = () => {
             position={campingPosition}
             rotation={[0.3, 17.7077, 0.1]}
             scale={campingScale}
+            setIsRotating={setIsRotating}
+            setCurrentStage={setCurrentStage}
           />
           <Tulia
+            setIsRotating={setIsRotating}
             isRotating={isRotating}
             position={tuliaPosition}
             rotation={[0.1, 0.7077, 0]}
