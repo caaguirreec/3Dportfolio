@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import sakura from "../assets/sakura.mp3";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
-import { Tulia, Cyclist, Island, Camping, Sky } from "../models";
+import { Tulia, Cyclist, CyclistAnimated, Camping, Sky } from "../models";
 
 const Home = () => {
   const audioRef = useRef(new Audio(sakura));
@@ -44,11 +44,11 @@ const Home = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
-      screenScale = [5.5, 5.5, 5.5];
-      screenPosition = [19, -7.5, -63.4];
+      screenScale = [4.5, 4.5, 4.5];
+      screenPosition = [10, -29.5, -73.4];
     } else {
-      screenScale = [5.5, 5.5, 5.5];
-      screenPosition = [19, -7.5, -63.4];
+      screenScale = [4.5, 4.5, 4.5];
+      screenPosition = [10, -29.5, -73.4];
     }
 
     return [screenScale, screenPosition];
@@ -65,11 +65,23 @@ const Home = () => {
     }
     return [screenScale, screenPosition];
   };
+  const adjustCyclistAnimatedForScreenSize = () => {
+    let screenScale, screenPosition;
 
+    if (window.innerWidth < 768) {
+      screenScale = [1.5, 1.5, 1.5];
+      screenPosition = [0.1, -0.3, 2];
+    } else {
+      screenScale = [1.0, 1.0, 1.0];
+      screenPosition = [0.1, -1.4, 2];
+    }
+    return [screenScale, screenPosition];
+  };
 
   const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
   const [campingScale, campingPosition] = adjustCampingForScreenSize();
   const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
+  const [cyclistAnimatedScale, cyclistAnimatedPosition] = adjustCyclistAnimatedForScreenSize();
 
   return (
     <section className='w-full h-screen relative'>
@@ -104,42 +116,26 @@ const Home = () => {
           <Camping 
             isRotating={isRotating} 
             position={campingPosition}
-            rotation={[0.3, 17.7077, 0.1]}
+            rotation={[0, 4.9, 0]}
             scale={campingScale}
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
           />
-          <Tulia
+          {/*<Tulia
             setIsRotating={setIsRotating}
             isRotating={isRotating}
             position={tuliaPosition}
             rotation={[0.1, 0.7077, 0]}
             scale={tuliaScale}
-          />
-          
-           
-          {/*<Island
+          />     
+          <CyclistAnimated
             isRotating={isRotating}
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
-            position={campingPosition}
-            rotation={[0.1, 4.7077, 0]}
-            scale={campingScale}
-          />
-          <Plane
-            isRotating={isRotating}
-            position={tuliaPosition}
-            rotation={[0, 20.1, 0]}
-            scale={tuliaScale}
+            position={cyclistAnimatedPosition}
+            rotation={[0.1, 0.7077, 0]}
+            scale={cyclistAnimatedScale}
           />*/}
-          <Cyclist 
-            isRotating={isRotating}
-            setIsRotating={setIsRotating}
-            setCurrentStage={setCurrentStage}
-            position={cyclistPosition}
-            rotation={[0.1, 0.7077, 0]}
-            scale={cyclistScale}
-          />
         </Suspense>
       </Canvas>
 
