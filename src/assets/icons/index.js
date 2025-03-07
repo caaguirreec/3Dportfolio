@@ -29,6 +29,7 @@ import aws from './aws.svg'
 import java from './java.svg'
 import python from './python.svg'
 import soundoff from './soundoff.png'
+import instagram from './instagram.svg'
 
 export {
     css,
@@ -61,5 +62,6 @@ export {
     soundoff,
     aws,
     java,
-    python
+    python,
+    instagram
 }
