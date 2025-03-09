@@ -33,6 +33,7 @@ import instagram from './instagram.svg'
 import polarsteps from './polarsteps.svg'
 import instagrambig from './instagrambig.svg'
 import polarstepsbig from './polarstepsbig.svg'
+import book from './book.svg'
 
 export {
     css,
@@ -69,5 +70,6 @@ export {
     instagram,
     polarsteps,
     instagrambig,
-    polarstepsbig
+    polarstepsbig,
+    book
 }

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Suspense, useRef, useState } from "react";
 import { Tulia, Cyclist, CyclistAnimated } from "../models";
 import { Loader } from "../components";
-import{instagrambig,polarstepsbig} from "../assets/icons";
+import{instagrambig,polarstepsbig,book} from "../assets/icons";
 
 const Contact = () => {
   const formRef = useRef();
@@ -19,7 +19,12 @@ const Contact = () => {
       name: "Polarsteps",
       type: "Travel blog",
       url: "https://www.polarsteps.com/CesarAguirre/13496275-tuliaenbicialsur",
-  }];
+  },{
+    imageUrl: book,
+    name: "Interactive book",
+    type: "Book",
+    url: "/booktuliaenbicialsur",
+}];
   const [loading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
   const [currentStage, setCurrentStage] = useState(1);
@@ -57,10 +62,12 @@ const Contact = () => {
      <div className='flex-1 min-w-[50%] flex flex-col'>
        <h2 className='head-text'>TuliaEnBiciAlSur</h2>
        
-       <label className='text-black-500 font-semibold'>
+       <p className='text-slate-500 mt-2 leading-relaxed'>
             Bikepacking trip through South america with my siberian dog Tulia.
-
-            </label>
+            In this section Tulia and me invite you to share with us this adventure of a lifetime. 
+            Through diverse sources as social media, a book and a 3D inmersive experience, you can follow us and be part of this amazing journey. 
+            
+            </p>
           <div className='mt-16 flex flex-wrap gap-12'>
                     {features.map((feature) => (
                       <div className='block-container w-20 h-20' key={feature.name}>
