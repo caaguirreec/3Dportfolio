@@ -3,10 +3,23 @@ import { Link } from "react-router-dom";
 import { Suspense, useRef, useState } from "react";
 import { Tulia, Cyclist, CyclistAnimated } from "../models";
 import { Loader } from "../components";
-import{instagram} from "../assets/icons";
+import{instagrambig,polarstepsbig} from "../assets/icons";
 
 const Contact = () => {
   const formRef = useRef();
+  const features = [
+    {
+        imageUrl: instagrambig,
+        name: "Instagram",
+        type: "Social media",
+        url: "https://www.instagram.com/tuliaenbicialsur/",
+    },
+    {
+      imageUrl: polarstepsbig,
+      name: "Polarsteps",
+      type: "Travel blog",
+      url: "https://www.polarsteps.com/CesarAguirre/13496275-tuliaenbicialsur",
+  }];
   const [loading] = useState(false);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
   const [currentStage, setCurrentStage] = useState(1);
@@ -42,17 +55,28 @@ const Contact = () => {
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
      <div className='flex-1 min-w-[50%] flex flex-col'>
-       <h2 className='head-text'>Tulia en bici al sur</h2>
+       <h2 className='head-text'>TuliaEnBiciAlSur</h2>
+       
        <label className='text-black-500 font-semibold'>
-            Viaje por suramérica en bicicleta con mi perrita husky siberiana.
-            <Link key="Instagram" to="https://www.instagram.com/tuliaenbicialsur/" target='_blank'>
-                     <img
-                       src={instagram}
-                       alt="Instagram"
-                       className='w-6 h-6 object-contain'
-                     />
-            </Link>
+            Bikepacking trip through South america with my siberian dog Tulia.
+
             </label>
+          <div className='mt-16 flex flex-wrap gap-12'>
+                    {features.map((feature) => (
+                      <div className='block-container w-20 h-20' key={feature.name}>
+                        <div className='btn-back rounded-xl' />
+                        <div className='btn-front rounded-xl flex justify-center items-center'>
+                        <Link key={feature.name} to={feature.url} target='_blank'>
+                          <img
+                            src={feature.imageUrl}
+                            alt={feature.name}
+                            //className='w-1/2 h-1/2 object-contain'
+                          />
+                        </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
     </div>
       <div className='lg:w-1/2 w-full lg:h-auto md:h-[550px] h-[350px]'>
         <Canvas

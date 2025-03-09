@@ -30,6 +30,9 @@ import java from './java.svg'
 import python from './python.svg'
 import soundoff from './soundoff.png'
 import instagram from './instagram.svg'
+import polarsteps from './polarsteps.svg'
+import instagrambig from './instagrambig.svg'
+import polarstepsbig from './polarstepsbig.svg'
 
 export {
     css,
@@ -63,5 +66,8 @@ export {
     aws,
     java,
     python,
-    instagram
+    instagram,
+    polarsteps,
+    instagrambig,
+    polarstepsbig
 }
