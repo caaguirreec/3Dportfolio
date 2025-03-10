@@ -10,7 +10,7 @@ const HomeInfo = ({ currentStage }) => {
         <span className='font-semibold mx-2 text-white'>César</span>
         👋
         <br />
-        Bikepacker and a Software Engineer from Colombia 🇨🇴
+        Software Engineer, Bikepacker and Musician from Colombia 🇨🇴
       </h1>
     );
 
@@ -18,7 +18,7 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
         <p className='font-medium sm:text-xl text-center'>
-          Worked with many companies <br /> and picked up many skills along the way
+          I have worked with diverse companies <br /> and have learned some professional skills along the way.
         </p>
 
         <Link to='/about' className='neo-brutalism-white neo-btn'>
@@ -33,11 +33,11 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
         <p className='font-medium text-center sm:text-xl'>
-          Led multiple projects to success over the years. <br /> Curious about the impact?
+          I have also worked on a music project. <br /> Curious?
         </p>
 
-        <Link to='/projects' className='neo-brutalism-white neo-btn'>
-          Visit my portfolio
+        <Link to='/music' className='neo-brutalism-white neo-btn'>
+          Visit
           <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
         </Link>
       </div>

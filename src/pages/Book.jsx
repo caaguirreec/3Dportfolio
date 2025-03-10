@@ -59,10 +59,10 @@ const Contact = () => {
 <div
     style={{
         border: '1px solid rgba(0, 0, 0, 0.3)',
-        height: '750px',
+        height: '300px',
     }}
 >
-<Viewer fileUrl={booktuliaenbicialsur} />;
+<Viewer fileUrl={booktuliaenbicialsur} />
 </div>
   
 </Worker>

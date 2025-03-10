@@ -7,3 +7,4 @@ export { Fox } from "./Fox"
 export { Cyclist } from "./Cyclist";
 export { CyclistAnimated } from "./CyclistAnimated";
 export { Tulia } from "./Tulia";
+export { VikingCellist } from "./VikingCellist";

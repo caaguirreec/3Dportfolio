@@ -4,6 +4,7 @@ import Projects from "./Projects";
 import Contact from "./Contact";
 import Traveling from "./Traveling";
 import Book from "./Book";
+import Music from "./Music";
 
 export {
     Home,
@@ -11,5 +12,6 @@ export {
     Projects,
     Contact,
     Traveling,
-    Book
+    Book,
+    Music,
 }

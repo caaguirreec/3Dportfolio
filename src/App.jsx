@@ -1,7 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import { Footer, Navbar } from "./components";
-import { About, Contact, Home, Projects, Traveling,Book } from "./pages";
+import { About, Contact, Home, Projects, Traveling, Book, Music } from "./pages";
 
 const App = () => {
   return (
@@ -20,6 +20,7 @@ const App = () => {
                   <Route path='/contact' element={<Contact />} />
                   <Route path='/traveling' element={<Traveling />} />
                   <Route path='/booktuliaenbicialsur' element={<Book />} />
+                  <Route path='/music' element={<Music />} />
                 </Routes>
                 <Footer />
               </>
