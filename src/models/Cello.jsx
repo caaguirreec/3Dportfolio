@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 
-import tuliaScene from "../assets/3d/vikingCellist.glb";
+import tuliaScene from "../assets/3d/cello.glb";
 
 
-export function VikingCellist({     
+export function Cello({     
     isRotating,
     setIsRotating,
     setCurrentStage,
@@ -19,6 +19,8 @@ export function VikingCellist({
   // Get animation actions associated with the tulia
   const { actions } = useAnimations(animations, ref);
   const rotationSpeed = useRef(0);
+   // Use a ref for the last mouse x position
+   const lastX = useRef(0);
   // Handle pointer (mouse or touch) down event
   const handlePointerDown = (event) => {
     event.stopPropagation();
@@ -43,7 +45,7 @@ export function VikingCellist({
         event.stopPropagation();
         event.preventDefault();
         if (isRotating) {
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+          const clientX = event.touches ? event.touches[0].clientX : event.clientX;
           const delta = (clientX - lastX.current) / viewport.width;
     
           // Update the island's rotation based on the mouse/touch movement
@@ -109,7 +111,7 @@ export function VikingCellist({
   // Use an effect to control the tulia's animation based on 'isRotating'
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
   useEffect(() => {
-    actions["CHELISTA_ICLOBLENDEWR|A|iCTM"].play();
+    //actions["CHELISTA_ICLOBLENDEWR|A|iCTM"].play();
     const canvas = gl.domElement;
     canvas.addEventListener("pointerdown", handlePointerDown);
     canvas.addEventListener("pointerup", handlePointerUp);

@@ -2,7 +2,7 @@ import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useRef, useState, useEffect } from "react";
 
-import { VikingCellist } from "../models";
+import { Cello } from "../models";
 import scarboroughFair from "../assets/scarboroughfair.mp3";
 import { soundoff, soundon } from "../assets/icons";
 import { Alert, Loader } from "../components";
@@ -14,6 +14,7 @@ const Music = () => {
     audioRef.current.loop = true;
     const [currentAnimation, setCurrentAnimation] = useState("idle");
     const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+    const [isRotating, setIsRotating] = useState(false);
 
   useEffect(() => {
     if (isPlayingMusic) {
@@ -31,9 +32,15 @@ const Music = () => {
       
 
       <div className='flex-1 min-w-[50%] flex flex-col'>
-        <h1 className='head-text'>FA</h1>
+        <h1 className='head-text'>FA: Duet with guitar and cello</h1>
+        Experiencing music from medieval times, Scarborough Fair is a traditional English ballad.
+        Then we explore the sound of the cello and guitar in a duet giving a new perspective to the song.
+        <br />
+        Video is coming soon.
+        <br />
 
-        Faaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+        Faaaaaaaaaa
          <div >
                 <img
                   src={!isPlayingMusic ? soundoff : soundon}
@@ -64,12 +71,12 @@ const Music = () => {
           />
 
           <Suspense fallback={<Loader />}>
-            <VikingCellist
-              setIsRotating={true}
-              currentAnimation={currentAnimation}
+            <Cello
+              isRotating={isRotating}
+              setIsRotating={setIsRotating}
               position={[-0.5, -1.35, 0]}
               rotation={[-12.629, -0.6, 0]}
-              scale={[3, 3, 3]}
+              scale={[3.5, 3.5, 3.5]}
             />
           </Suspense>
         </Canvas>
