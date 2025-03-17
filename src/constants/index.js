@@ -31,6 +31,21 @@ import {
 
 export const skills = [
     {
+        imageUrl: java,
+        name: "Java",
+        type: "Backend",
+    },
+    {
+        imageUrl: python,
+        name: "Python",
+        type: "Backend",
+    },
+    {
+        imageUrl: aws,
+        name: "AWS",
+        type: "Cloud",
+    },
+    {
         imageUrl: css,
         name: "CSS",
         type: "Frontend",
@@ -79,32 +94,59 @@ export const skills = [
         imageUrl: typescript,
         name: "TypeScript",
         type: "Frontend",
-    },
-    {
-        imageUrl: java,
-        name: "Java",
-        type: "Backend",
-    },
-    {
-        imageUrl: python,
-        name: "Python",
-        type: "Backend",
-    },
-    {
-        imageUrl: aws,
-        name: "AWS",
-        type: "Cloud",
     }
+    
 ];
-
+export const academy = [
+    {
+        title: "Researcher",
+        institution: "Universidad Nacional de Colombia",
+        date: "Oct 2012- Oct 2015",
+        points: [
+            "Researcher in machine learning and vibration analysis for mechanical systems.",
+            "Research and develop machine learning models to predict mechanical failures inindustrial devices as bearings, engines, and axis.",
+            " The job was performed on a mechanical lab designed to acquire mechanical signals through vibration analysis."
+            
+        ],
+        publications: [
+            {
+                name: "Identificación mejorada de componentes en baja frecuencia de turbinas eólicas empleando EEMD eintegración en el tiempo",
+                url:  "https://www.redalyc.org/pdf/1470/147040027009.pdf",
+            },
+            {
+                name: "Epilepsy activity detection based on optimized one-class classifiers",
+                url:  "https://ieeexplore.ieee.org/abstract/document/6644936",
+            },
+            {
+                name: "EEG Rhythm Analysis Using Stochastic Relevance",
+                url:  "https://link.springer.com/chapter/10.1007/978-3-319-00846-2_163",
+            }   
+        ]
+     },
+     {
+        title: "Bachelor's degree in Electronic engineering",
+        institution: "Universidad Nacional de Colombia",
+        date: "Jan 2007- Dec 2012",
+        points: [
+            "Degree in electronic engineering with a focus on electronics and telecommunications.",
+            "Thesis: Design and implementation of an information system for monitoring and control of fishery in San Andrés island.",
+        ],
+        publications:[
+            {
+                name:"SIMASPE",
+                url: "https://agenciadenoticias.unal.edu.co/detalle/software-para-afrontar-pesca-intensiva-en-san-andres"
+            }
+        ]
+    }
+]
 export const experiences = [
     {
         title: "Software development Engineer",
-        company_name: "Playvox",
+        company_name: "Playvox",                                    
         icon: meta,
         iconBg: "#a2d2ff",
         date: "Jun 2022 - Abr 2024",
-        points: [
+        points: [                                                                                                                                                                        
             "Design, code and maintain backend code in Python and Node for contact center industry.",
             "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
             "Implementing IA models and integrating them with APIs, and data flows",

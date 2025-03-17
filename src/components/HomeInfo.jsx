@@ -18,11 +18,12 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
         <p className='font-medium sm:text-xl text-center'>
-          I have worked with diverse companies <br /> and have learned some professional skills along the way.
+          I have worked in tech companies. <br /> 
+          In the process I have built skills such as teamwork, technical mastery, and creative problem-solving.
         </p>
 
         <Link to='/about' className='neo-brutalism-white neo-btn'>
-          Learn more
+          Look at
           <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
         </Link>
       </div>
@@ -33,7 +34,7 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
         <p className='font-medium text-center sm:text-xl'>
-          I have also worked on a music project. <br /> Curious?
+          I have worked on a music project as a cello performer. <br /> Curious?
         </p>
 
         <Link to='/music' className='neo-brutalism-white neo-btn'>
@@ -48,7 +49,7 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
       <p className='font-medium sm:text-xl text-center'>
-        Need a project done or looking for a dev? <br/> I'm just a few keystrokes away
+        Need a digital project done or looking for a dev? <br/> I'm just a message away
       </p>
 
       <Link to='/contact' className='neo-brutalism-white neo-btn'>
@@ -58,7 +59,20 @@ const HomeInfo = ({ currentStage }) => {
     </div>
     );
   }
+  if (currentStage === 5) {
+    return (
+      <div className='info-box'>
+      <p className='font-medium sm:text-xl text-center'>
+        I am also a Bikepacker seeking new places to ride and adventures to live.<br/>
+      </p>
 
+      <Link to='/traveling' className='neo-brutalism-white neo-btn'>
+        Take a look
+        <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
+      </Link>
+    </div>
+    );
+  }
   return null;
 };
 

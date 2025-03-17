@@ -2,9 +2,10 @@ import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-
+import { Link } from "react-router-dom";
 import { CTA } from "../components";
-import { experiences, skills } from "../constants";
+import { experiences, skills,academy } from "../constants";
+import{paper} from "../assets/icons";
 
 import "react-vertical-timeline-component/style.min.css";
 
@@ -103,6 +104,74 @@ const About = () => {
             ))}
           </VerticalTimeline>
         </div>
+
+
+
+
+
+        <h3 className='subhead-text'>Academy background</h3>
+        <div className='mt-12 flex'>
+          <VerticalTimeline>
+            {academy.map((academy, index) => (
+              <VerticalTimelineElement
+                key={academy.institution}
+                date={academy.date}
+                iconStyle={{ background: academy.iconBg }}
+                icon={
+                  <div className='flex justify-center items-center w-full h-full'>
+                  </div>
+                }
+                contentStyle={{
+                  borderBottom: "8px",
+                  borderStyle: "solid",
+                  borderBottomColor: academy.iconBg,
+                  boxShadow: "none",
+                }}
+              >
+                <div>
+                  <h3 className='text-black text-xl font-poppins font-semibold'>
+                    {academy.title}
+                  </h3>
+                  <p
+                    className='text-black-500 font-medium text-base'
+                    style={{ margin: 0 }}
+                  >
+                    {academy.institution}
+                  </p>
+                </div>
+
+                <ul className='my-5 list-disc ml-5 space-y-2'>
+                  {academy.points.map((point, index) => (
+                    <li
+                      key={`academy-point-${index}`}
+                      className='text-black-500/50 font-normal pl-1 text-sm'
+                    >
+                      {point}
+                    </li>
+                  ))}
+                </ul>
+                <p
+                    className='text-black-500 font-medium text-base'
+                    style={{ margin: 0 }}
+                  >
+                    Publications:
+                  </p>
+                <div className='mt-16 flex flex-wrap gap-12'>
+                {academy.publications.map((publication, index) => (  
+                  
+                <Link key={publication.name} to={publication.url} target='_blank'>                   
+                  <img
+                            src={paper}
+                            alt={publication.name}
+                  />
+                </Link>
+                
+                ))}
+                </div>
+              </VerticalTimelineElement>
+            ))}
+          </VerticalTimeline>
+        </div>  
       </div>
 
       <hr className='border-slate-200' />

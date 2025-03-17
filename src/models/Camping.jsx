@@ -195,6 +195,9 @@ export function Camping({
 
       // Set the current stage based on the island's orientation
       switch (true) {
+        case normalizedRotation >= 5.88 && normalizedRotation <= 6.85:
+          setCurrentStage(5);
+          break;
         case normalizedRotation >= 5.45 && normalizedRotation <= 5.85:
           setCurrentStage(4);
           break;
