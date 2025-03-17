@@ -1,6 +1,7 @@
 import { meta, shopify, starbucks, tesla } from "../assets/images";
 import {
     car,
+    car2,
     contact,
     css,
     estate,
@@ -222,7 +223,7 @@ export const socialLinks = [
 
 export const projects = [
     {
-        iconUrl: pricewise,
+        iconUrl: car2,
         theme: 'btn-back-red',
         name: 'Pioneer',
         description: 'Creation from scratch of a controlled mechanical car with a Raspberry Pi, a camera, and a web interface to control it.',

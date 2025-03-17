@@ -35,6 +35,7 @@ import instagrambig from './instagrambig.svg'
 import polarstepsbig from './polarstepsbig.svg'
 import book from './book.svg'
 import paper from './paper.png'
+import car2 from './car2.svg'
 
 export {
     css,
@@ -73,5 +74,6 @@ export {
     instagrambig,
     polarstepsbig,
     book,
-    paper
+    paper,
+    car2
 }

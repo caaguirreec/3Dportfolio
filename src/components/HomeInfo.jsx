@@ -18,8 +18,8 @@ const HomeInfo = ({ currentStage }) => {
     return (
       <div className='info-box'>
         <p className='font-medium sm:text-xl text-center'>
-          I have worked in tech companies. <br /> 
-          In the process I have built skills such as teamwork, technical mastery, and creative problem-solving.
+          10+ years building digital solutions in tech sector. <br /> 
+          Teamwork, technical mastery, and creative problem-solving are some skills I have built.
         </p>
 
         <Link to='/about' className='neo-brutalism-white neo-btn'>
