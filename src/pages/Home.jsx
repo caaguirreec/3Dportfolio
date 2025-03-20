@@ -112,7 +112,7 @@ const Home = () => {
           />
           
          
-          <Sky isRotating={isRotating} />
+          {/*<Sky isRotating={isRotating} />*/}
           <Camping 
             isRotating={isRotating} 
             position={campingPosition}

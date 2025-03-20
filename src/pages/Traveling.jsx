@@ -10,18 +10,18 @@ const Contact = () => {
   const features = [
     {
         imageUrl: instagrambig,
-        name: "Instagram",
+        name: "Media",
         type: "Social media",
         url: "https://www.instagram.com/tuliaenbicialsur/",
     },
     {
       imageUrl: polarstepsbig,
-      name: "Polarsteps",
+      name: "Route",
       type: "Travel blog",
       url: "https://www.polarsteps.com/CesarAguirre/13496275-tuliaenbicialsur",
   },{
     imageUrl: book,
-    name: "Interactive book",
+    name: "Book",
     type: "Book",
     url: "/booktuliaenbicialsur",
 }];
@@ -72,14 +72,15 @@ const Contact = () => {
                     {features.map((feature) => (
                       <div className='block-container w-20 h-20' key={feature.name}>
                         <div className='btn-back rounded-xl' />
-                        <div className='btn-front rounded-xl flex justify-center items-center'>
+                        <div className='btn-front rounded-xl justify-center items-center'>
                         <Link key={feature.name} to={feature.url} target='_blank'>
                           <img
                             src={feature.imageUrl}
                             alt={feature.name}
-                            //className='w-1/2 h-1/2 object-contain'
-                          />
-                        </Link>
+                            className='w-1/2 h-1/2 object-contain'
+                          />    
+                          {feature.name}                      
+                        </Link>                        
                         </div>
                       </div>
                     ))}
