@@ -7,7 +7,7 @@
    version="1.1"
    id="svg2"
    sodipodi:docname="logo.svg"
-   inkscape:version="1.3.1 (9b9bdc1480, 2023-11-25, custom)"
+   inkscape:version="1.4.1-rc (d9e8dc1fe0, 2025-03-10)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -21,9 +21,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="9.3125"
-     inkscape:cx="24"
-     inkscape:cy="24"
+     inkscape:zoom="2"
+     inkscape:cx="48"
+     inkscape:cy="26"
      inkscape:window-width="1366"
      inkscape:window-height="647"
      inkscape:window-x="0"
@@ -36,7 +36,7 @@
        id="paint0_linear_1545_39"
        x1="8"
        y1="35.5"
-       x2="38.0109"
+       x2="38.010899"
        y2="10.5484"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -50,14 +50,21 @@
   </defs>
   <text
      xml:space="preserve"
-     style="font-size:21.653px;fill:#000000;stroke-width:1.80442"
-     x="8.1071825"
-     y="30.402102"
+     style="font-size:13.3333px;fill:#1a1a1a;stroke-width:1.80442"
+     x="0.095866017"
+     y="19.897581"
      id="text2"
      transform="scale(0.93252161,1.0723612)"><tspan
        sodipodi:role="line"
        id="tspan2"
-       x="8.1071825"
-       y="30.402102"
-       style="font-weight:bold;fill:#d45500;stroke-width:1.80442">CA</tspan></text>
+       x="0.095866017"
+       y="19.897581"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:work-sans;-inkscape-font-specification:work-sans;fill:#1a1a1a;stroke-width:1.80442"> <tspan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;font-family:poppins;-inkscape-font-specification:poppins"
+   id="tspan3">César </tspan></tspan><tspan
+       sodipodi:role="line"
+       x="0.095866017"
+       y="36.564205"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:12px;font-family:poppins;-inkscape-font-specification:poppins;fill:#1a1a1a;stroke-width:1.80442"
+       id="tspan1">Aguirre</tspan></text>
 </svg>
