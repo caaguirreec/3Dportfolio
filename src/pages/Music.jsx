@@ -5,7 +5,7 @@ import { Suspense, useRef, useState, useEffect } from "react";
 import { Cello } from "../models";
 import scarboroughFair from "../assets/scarboroughfair.mp3";
 import { soundoff, soundon } from "../assets/icons";
-import { Alert, Loader } from "../components";
+import { Alert, CTA, Loader } from "../components";
 
 
 const Music = () => {
@@ -29,7 +29,7 @@ const Music = () => {
   
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
-      
+      <div className='py-36'>
 
       <div className='flex-1 min-w-[50%] flex flex-col'>
         <h1 className='head-text'>FA: Duet with guitar and cello</h1>
@@ -80,6 +80,9 @@ const Music = () => {
             />
           </Suspense>
         </Canvas>
+      </div>
+      <hr className='border-slate-200' />
+      <CTA/>
       </div>
     </section>
   );

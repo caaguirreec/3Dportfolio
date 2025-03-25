@@ -1,4 +1,4 @@
-import { meta, shopify, starbucks, tesla } from "../assets/images";
+import { meta, shopify, starbucks, tesla, tulia1,tulia2, tulia3,tulia4,tulia5,tulia6,tulia7,tulia8,tulia9,tulia10} from "../assets/images";
 import {
     car,
     car2,
@@ -30,6 +30,48 @@ import {
     aws
 } from "../assets/icons";
 
+export const gallery =[
+    {
+        imageUrl:tulia1,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia2,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia3,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia4,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia5,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia6,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia7,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia8,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia9,
+        name: "Tulia en Bici al Sur", 
+    },
+    {
+        imageUrl:tulia10,
+        name: "Tulia en Bici al Sur", 
+    }
+]
 export const skills = [
     {
         imageUrl: java,

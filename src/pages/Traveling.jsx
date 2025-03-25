@@ -1,5 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Link } from "react-router-dom";
+import { CTA, Gallery } from "../components";
 import { Suspense, useRef, useState } from "react";
 import { Tulia, Cyclist, CyclistAnimated } from "../models";
 import { Loader } from "../components";
@@ -59,6 +60,7 @@ const Contact = () => {
   const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
+       <div className='py-16'>
      <div className='flex-1 min-w-[50%] flex flex-col'>
        <h2 className='head-text'>TuliaEnBiciAlSur</h2>
        
@@ -68,7 +70,7 @@ const Contact = () => {
             Through diverse sources as social media, a book and a 3D inmersive experience, you can follow us and be part of this amazing journey. 
             
             </p>
-          <div className='mt-16 flex flex-wrap gap-12'>
+          <div className='travelingbox mt-16 flex flex-2 flex-row gap-12'>
                     {features.map((feature) => (
                       <div className='block-container w-20 h-20' key={feature.name}>
                         <div className='btn-back rounded-xl' />
@@ -86,7 +88,7 @@ const Contact = () => {
                     ))}
                   </div>
     </div>
-      <div className='lg:w-1/2 w-full lg:h-auto md:h-[550px] h-[350px]'>
+      <div className='lg:w-auto w-full lg:h-auto md:h-[550px] h-[450px]'>
         <Canvas
           camera={{
             position: [0, 0, 5],
@@ -124,7 +126,13 @@ const Contact = () => {
           </Suspense>
         </Canvas>
       </div>
+      <hr className='border-slate-200' />
+      <Gallery />
+      <CTA />
+      </div>
+      
     </section>
+    
   );
 };
 
