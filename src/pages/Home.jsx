@@ -44,10 +44,10 @@ const Home = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
-      screenScale = [4.5, 4.5, 4.5];
+      screenScale = [4.2, 4.2, 4.2];
       screenPosition = [10, -29.5, -73.4];
     } else {
-      screenScale = [4.5, 4.5, 4.5];
+      screenScale = [3.8, 3.8, 3.8];
       screenPosition = [10, -29.5, -73.4];
     }
 

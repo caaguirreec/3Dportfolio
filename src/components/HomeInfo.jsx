@@ -5,7 +5,7 @@ import { arrow } from "../assets/icons";
 const HomeInfo = ({ currentStage }) => {
   if (currentStage === 1)
     return (
-      <h1 className='sm:text-xl sm:leading-snug text-center  py-4 px-8 text-black mx-5'>
+      <h1 className='sm:text-xl sm:leading-snug text-center bg-white  py-4 px-8 text-black mx-5'>
         Hi, I'm
         <span className='font-semibold mx-2 text-black'>César</span>
         👋
@@ -22,7 +22,7 @@ const HomeInfo = ({ currentStage }) => {
           Teamwork, technical mastery, and creative problem-solving are some skills I have built.
         </p>
 
-        <Link to='/about' className='neo-brutalism-white neo-btn'>
+        <Link to='/about' className='bg-black neo-btn'>
           Look at
           <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
         </Link>
@@ -37,7 +37,7 @@ const HomeInfo = ({ currentStage }) => {
           I have worked on a music project as a cello performer. <br /> Curious?
         </p>
 
-        <Link to='/music' className='neo-brutalism-white neo-btn'>
+        <Link to='/music' className='bg-black neo-btn'>
           Visit
           <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
         </Link>
@@ -52,7 +52,7 @@ const HomeInfo = ({ currentStage }) => {
         Need a digital project done or looking for a dev? <br/> I'm just a message away
       </p>
 
-      <Link to='/contact' className='neo-brutalism-white neo-btn'>
+      <Link to='/contact' className='bg-black neo-btn'>
         Let's talk
         <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
       </Link>
@@ -62,11 +62,11 @@ const HomeInfo = ({ currentStage }) => {
   if (currentStage === 5) {
     return (
       <div className='info-box'>
-      <p className='font-medium sm:text-xl text-center'>
+      <p className='font-normal sm:text-x text-center'>
         I am also a Bikepacker seeking new places to ride and adventures to live.<br/>
       </p>
 
-      <Link to='/traveling' className='neo-brutalism-white neo-btn'>
+      <Link to='/traveling' className='bg-black neo-btn'>
         Take a look
         <img src={arrow} alt='arrow' className='w-4 h-4 object-contain' />
       </Link>
