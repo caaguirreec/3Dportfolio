@@ -88,7 +88,7 @@ const Contact = () => {
                     ))}
                   </div>
     </div>
-      <div className='lg:w-auto w-full lg:h-auto md:h-[550px] h-[450px]'>
+      <div className='lg:w-auto w-full lg:h-auto md:h-[650px] h-[450px]'>
         <Canvas
           camera={{
             position: [0, 0, 5],
