@@ -90,15 +90,17 @@ const Home = () => {
       </div>
 
       <Canvas
+        
         className={`w-full h-screen bg-transparent ${
           isRotating ? "cursor-grabbing" : "cursor-grab"
         }`}
-        camera={{ near: 0.9, far: 1000 }}
+        camera={{ near: 0.9, far: 100000 }}
+
       >
         <Suspense fallback={<Loader />}>
           <directionalLight position={[1, 1, 1]} intensity={2} />
           <ambientLight intensity={0.5} />
-          <pointLight position={[10, 5, 10]} intensity={2} />
+          <pointLight position={[10, 5, 10]} intensity={3} />
           <spotLight
             position={[0, 50, 10]}
             angle={0.15}

@@ -4,7 +4,7 @@ import { background } from "../assets/images";
 import {  WebGLCubeRenderTarget } from 'three'
 
 
-// 3D Model from: https://sketchfab.com/3d-models/phoenix-bird-844ba0cf144a413ea92c779f18912042
+
 export function Sky() {
 
   const {gl} = useThree();

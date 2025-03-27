@@ -67,7 +67,7 @@ body:has(.card[data-color="green"]:hover) {
   }
 
   .neo-btn {
-    @apply py-2 px-8 rounded-lg text-white text-center font-semibold sm:w-1/4 w-[70%] -bottom-5 absolute mx-auto right-0 left-60 flex justify-center items-center gap-5;
+    @apply py-2 px-8 rounded-lg text-white text-center font-semibold sm:w-1/4 w-[70%] -bottom-5 absolute mx-auto right-0 left-0 flex justify-center items-center gap-5;
   }
 
   .cta {
