@@ -35,10 +35,10 @@ const Contact = () => {
 
     if (window.innerWidth < 768) {
       screenScale = [0.7, 0.7, 0.7];
-      screenPosition = [0.9, -0.9, 2];
+      screenPosition = [0.6, -0.9, 2];
     } else {
       screenScale = [0.7, 0.7, 0.7];
-      screenPosition = [0.9, -0.9, 2];
+      screenPosition = [0.6, -0.9, 2];
     }
     return [screenScale, screenPosition];
   };
@@ -59,7 +59,7 @@ const Contact = () => {
   const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
   const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
   return (
-    <section className='relative flex lg:flex-row flex-col max-container'>
+    <section className='relative flex lg:flex-row flex-col max-container bg-color-black'>
        <div className='py-16'>
         <div className='flex-1 min-w-[50%] flex flex-col'>
          <h2 className='head-text'>TuliaEnBiciAlSur</h2>
