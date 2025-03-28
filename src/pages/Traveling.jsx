@@ -37,7 +37,7 @@ const Contact = () => {
       screenScale = [1.5, 1.5, 1.5];
       screenPosition = [0.9, -0.9, 2];
     } else {
-      screenScale = [1.5, 1.5, 1.5];
+      screenScale = [1.0, 1.0, 1.0];
       screenPosition = [0.9, -0.9, 2];
     }
     return [screenScale, screenPosition];
@@ -61,15 +61,15 @@ const Contact = () => {
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
        <div className='py-16'>
-     <div className='flex-1 min-w-[50%] flex flex-col'>
-       <h2 className='head-text'>TuliaEnBiciAlSur</h2>
+        <div className='flex-1 min-w-[50%] flex flex-col'>
+         <h2 className='head-text'>TuliaEnBiciAlSur</h2>
        
-       <p className='text-slate-500 mt-2 leading-relaxed'>
-            Bikepacking trip through South america with my siberian dog Tulia.
-            In this section Tulia and me invite you to share with us this adventure of a lifetime. 
-            Through diverse sources as social media, a book and a 3D inmersive experience, you can follow us and be part of this amazing journey. 
-            
-            </p>
+          <p className='text-slate-500 mt-2 leading-relaxed'>
+                Bikepacking trip through South america with my siberian dog Tulia.
+                In this section Tulia and me invite you to share with us this adventure of a lifetime. 
+                Through diverse sources as social media, a book and a 3D inmersive experience, you can follow us and be part of this amazing journey. 
+                
+                </p>
           <div className='travelingbox mt-16 flex flex-2 flex-row gap-12'>
                     {features.map((feature) => (
                       <div className='block-container w-20 h-20' key={feature.name}>
@@ -86,15 +86,17 @@ const Contact = () => {
                         </div>
                       </div>
                     ))}
-                  </div>
-    </div>
-      <div className='lg:w-auto w-full lg:h-auto md:h-[650px] h-[450px]'>
+          </div>
+        </div>
+        <div/>  
+        <div style={{ width: "60vw", height: "60vh" }}>
+      
         <Canvas
-          camera={{
+            camera={{
             position: [0, 0, 5],
             fov: 75,
             near: 0.1,
-            far: 1000,
+            far: 100000000,
           }}
         >
           <directionalLight position={[0, 0, 1]} intensity={2.5} />
@@ -125,12 +127,11 @@ const Contact = () => {
           />
           </Suspense>
         </Canvas>
-      </div>
+    </div>
       <hr className='border-slate-200' />
-      <Gallery />
-      <CTA />
+        <Gallery />
+        <CTA />
       </div>
-      
     </section>
     
   );

@@ -14,7 +14,7 @@ import tulia7 from './tulia7.jpg'
 import tulia8 from './tulia8.jpg'
 import tulia9 from './tulia9.jpg'
 import tulia10 from './tulia10.jpg'
-import background from './homebackground.svg'
+import background from './homebackground.png'
 export {
     hero,
     meta,
