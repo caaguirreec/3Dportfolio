@@ -34,10 +34,10 @@ const Contact = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
-      screenScale = [1.5, 1.5, 1.5];
+      screenScale = [0.7, 0.7, 0.7];
       screenPosition = [0.9, -0.9, 2];
     } else {
-      screenScale = [1.0, 1.0, 1.0];
+      screenScale = [0.7, 0.7, 0.7];
       screenPosition = [0.9, -0.9, 2];
     }
     return [screenScale, screenPosition];
@@ -46,11 +46,11 @@ const Contact = () => {
     let screenScale, screenPosition;
 
     if (window.innerWidth < 768) {
-      screenScale = [4.2, 4.2, 4.2];
-      screenPosition = [-3, -4, -4];
+      screenScale = [2.7, 2.7, 2.7];
+      screenPosition = [-1.5, -4, -4];
     } else {
-      screenScale = [4.2, 4.2, 4.2];
-      screenPosition = [-3, -4, -4];
+      screenScale = [2.7, 2.7, 2.7];
+      screenPosition = [-1.5, -4, -4];
     }
 
     return [screenScale, screenPosition];
