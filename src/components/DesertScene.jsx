@@ -3,38 +3,41 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Houses } from './Houses'
 
-// Tree component
-function Tree({ position, scale = [1, 1, 1] }) {
-  const trunkGeometry = new THREE.CylinderGeometry(0.2, 0.3, 2, 8)
-  const leavesGeometry = new THREE.ConeGeometry(1, 2, 8)
+// Cactus component
+function Cactus({ position, scale = [1, 1, 1] }) {
+  const trunkGeometry = new THREE.CylinderGeometry(0.3, 0.3, 2, 8)
+  const armGeometry = new THREE.CylinderGeometry(0.2, 0.2, 1, 8)
   
   return (
     <group position={position} scale={scale}>
       <mesh geometry={trunkGeometry}>
-        <meshStandardMaterial color="#5D4037" />
+        <meshStandardMaterial color="#2E7D32" />
       </mesh>
-      <mesh geometry={leavesGeometry} position={[0, 1.5, 0]}>
+      <mesh geometry={armGeometry} position={[0.5, 1, 0]} rotation={[0, 0, Math.PI/4]}>
+        <meshStandardMaterial color="#2E7D32" />
+      </mesh>
+      <mesh geometry={armGeometry} position={[-0.5, 1, 0]} rotation={[0, 0, -Math.PI/4]}>
         <meshStandardMaterial color="#2E7D32" />
       </mesh>
     </group>
   )
 }
 
-// Mountain component
-function Mountain({ position, scale = [1, 1, 1] }) {
-  const geometry = new THREE.ConeGeometry(3, 5, 8)
+// Sand Dune component
+function SandDune({ position, scale = [1, 1, 1] }) {
+  const geometry = new THREE.ConeGeometry(2, 1.5, 8)
   
   return (
     <mesh position={position} scale={scale}>
       <primitive object={geometry} />
-      <meshStandardMaterial color="#757575" />
+      <meshStandardMaterial color="#FDD835" />
     </mesh>
   )
 }
 
-// River component
-function River({ position, scale = [1, 1, 1] }) {
-  const geometry = new THREE.PlaneGeometry(20, 2, 1)
+// Oasis component
+function Oasis({ position, scale = [1, 1, 1] }) {
+  const geometry = new THREE.CircleGeometry(1.5, 32)
   
   return (
     <mesh position={position} scale={scale} rotation={[-Math.PI / 2, 0, 0]}>
@@ -44,13 +47,13 @@ function River({ position, scale = [1, 1, 1] }) {
   )
 }
 
-export function ForestScene({ cyclistPosition, onCollision }) {
+export function DesertScene({ cyclistPosition, onCollision }) {
   const sceneRef = useRef()
   
-  // Generate random positions for trees
-  const trees = useMemo(() => {
+  // Generate random positions for cacti
+  const cacti = useMemo(() => {
     const positions = []
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 30; i++) {
       positions.push([
         Math.random() * 40 - 20,
         0,
@@ -60,10 +63,10 @@ export function ForestScene({ cyclistPosition, onCollision }) {
     return positions
   }, [])
 
-  // Generate random positions for mountains
-  const mountains = useMemo(() => {
+  // Generate random positions for sand dunes
+  const dunes = useMemo(() => {
     const positions = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 8; i++) {
       positions.push([
         Math.random() * 40 - 20,
         0,
@@ -81,34 +84,32 @@ export function ForestScene({ cyclistPosition, onCollision }) {
     const cyclistX = cyclistPosition[0]
     const cyclistZ = cyclistPosition[2]
 
-    // Check tree collisions
-    trees.forEach(([x, _, z]) => {
+    // Check cactus collisions
+    cacti.forEach(([x, _, z]) => {
       const distance = Math.sqrt(
         Math.pow(cyclistX - x, 2) + Math.pow(cyclistZ - z, 2)
       )
-      if (distance < cyclistRadius + 0.5) { // Tree collision radius
-        onCollision('tree')
+      if (distance < cyclistRadius + 0.5) { // Cactus collision radius
+        onCollision('cactus')
       }
     })
 
-    // Check mountain collisions
-    mountains.forEach(([x, _, z]) => {
+    // Check dune collisions
+    dunes.forEach(([x, _, z]) => {
       const distance = Math.sqrt(
         Math.pow(cyclistX - x, 2) + Math.pow(cyclistZ - z, 2)
       )
-      if (distance < cyclistRadius + 3) { // Mountain collision radius
-        onCollision('mountain')
+      if (distance < cyclistRadius + 2) { // Dune collision radius
+        onCollision('dune')
       }
     })
 
-    // Check river collision
-    const riverWidth = 2
-    const riverLength = 20
+    // Check oasis collision
+    const oasisRadius = 1.5
     if (
-      Math.abs(cyclistZ) < riverWidth / 2 &&
-      Math.abs(cyclistX) < riverLength / 2
+      Math.pow(cyclistX, 2) + Math.pow(cyclistZ, 2) < Math.pow(oasisRadius, 2)
     ) {
-      onCollision('river')
+      onCollision('oasis')
     }
 
     // Check house collisions
@@ -133,28 +134,28 @@ export function ForestScene({ cyclistPosition, onCollision }) {
       {/* Ground */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
         <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color="#4CAF50" />
+        <meshStandardMaterial color="#FFB74D" />
       </mesh>
 
-      {/* Trees */}
-      {trees.map((position, index) => (
-        <Tree key={index} position={position} />
+      {/* Cacti */}
+      {cacti.map((position, index) => (
+        <Cactus key={index} position={position} />
       ))}
 
-      {/* Mountains */}
-      {mountains.map((position, index) => (
-        <Mountain key={index} position={position} scale={[2, 2, 2]} />
+      {/* Sand Dunes */}
+      {dunes.map((position, index) => (
+        <SandDune key={index} position={position} scale={[2, 2, 2]} />
       ))}
 
-      {/* River */}
-      <River position={[0, 0, 0]} scale={[1, 1, 1]} />
+      {/* Oasis */}
+      <Oasis position={[0, 0, 0]} />
 
       {/* Houses */}
       <Houses />
 
       {/* Ambient light */}
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
     </group>
   )
 } 

@@ -137,7 +137,7 @@ const Home = () => {
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
           />
-          <Tulia
+         {/* <Tulia
             setIsRotating={setIsRotating}
             isRotating={isRotating}
             position={tuliaPosition}
@@ -158,7 +158,7 @@ const Home = () => {
             position={cyclistAnimatedPosition}
             rotation={[0.1, 0.7077, 0]}
             scale={cyclistAnimatedScale}
-          />
+          />*/}
         </Suspense>
       </Canvas>
 
