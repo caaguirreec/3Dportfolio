@@ -57,6 +57,7 @@ export function CyclistAnimated({
       };
  // Handle keydown events
  const handleKeyDown = (event) => {
+  actions["M_rig_Action_S"].play();
     // if (event.key === "ArrowLeft") {
     //   if (!isRotating) setIsRotating(true);
 
@@ -72,6 +73,7 @@ export function CyclistAnimated({
 
   // Handle keyup events
   const handleKeyUp = (event) => {
+    actions["M_rig_Action_S"].stop();
     if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
       setIsRotating(false);
     }
@@ -109,8 +111,8 @@ export function CyclistAnimated({
   // Use an effect to control the tulia's animation based on 'isRotating'
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
   useEffect(() => {
-    console.log("actions: ", actions);
-    actions["M_rig_Action_S"].play();
+    
+    
     const canvas = gl.domElement;
     canvas.addEventListener("pointerdown", handlePointerDown);
     canvas.addEventListener("pointerup", handlePointerUp);

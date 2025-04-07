@@ -5,6 +5,7 @@ import Contact from "./Contact";
 import Traveling from "./Traveling";
 import Book from "./Book";
 import Music from "./Music";
+import BikePackingGame from "./BikePackingGame";
 
 export {
     Home,
@@ -14,4 +15,5 @@ export {
     Traveling,
     Book,
     Music,
+    BikePackingGame,
 }

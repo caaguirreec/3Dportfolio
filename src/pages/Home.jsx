@@ -4,7 +4,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import sakura from "../assets/sakura.mp3";
 import { HomeInfo, Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
-import { Tulia, Cyclist, CyclistAnimated, Camping, Sky } from "../models";
+import { Tulia, Cyclist, CyclistAnimated, Camping, Sky,Cello } from "../models";
 
 const Home = () => {
   const audioRef = useRef(new Audio(sakura));
@@ -24,16 +24,29 @@ const Home = () => {
       audioRef.current.pause();
     };
   }, [isPlayingMusic]);
-
-  const adjustTuliaForScreenSize = () => {
+  const adjustCelloForScreenSize = () => {
     let screenScale, screenPosition;
 
     // If screen width is less than 768px, adjust the scale and position
     if (window.innerWidth < 768) {
       screenScale = [2.2, 2.2, 2.2];
-      screenPosition = [-3, -4, -4];
+      screenPosition = [-5, -4, -4];
     } else {
       screenScale = [2.2, 2.2, 2.2];
+      screenPosition = [5, -4, -4];
+    }
+
+    return [screenScale, screenPosition];
+  };
+  const adjustTuliaForScreenSize = () => {
+    let screenScale, screenPosition;
+
+    // If screen width is less than 768px, adjust the scale and position
+    if (window.innerWidth < 768) {
+      screenScale = [1.2, 1.2, 1.2];
+      screenPosition = [-3, -4, -4];
+    } else {
+      screenScale = [1.2, 1.2, 1.2];
       screenPosition = [-3, -4, -4];
     }
 
@@ -60,7 +73,7 @@ const Home = () => {
       screenScale = [1.5, 1.5, 1.5];
       screenPosition = [0.1, -0.3, 2];
     } else {
-      screenScale = [1.5, 1.5, 1.5];
+      screenScale = [1.0, 1.0, 1.0];
       screenPosition = [-0.1, -0.3, 2];
     }
     return [screenScale, screenPosition];
@@ -72,13 +85,14 @@ const Home = () => {
       screenScale = [1.5, 1.5, 1.5];
       screenPosition = [0.1, -0.3, 2];
     } else {
-      screenScale = [1.0, 1.0, 1.0];
-      screenPosition = [0.1, -1.4, 2];
+      screenScale = [0.5, 0.5, 0.5];
+      screenPosition = [-0.5, -1.4, 2];
     }
     return [screenScale, screenPosition];
   };
 
   const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
+  const [celloScale, celloPosition] = adjustCelloForScreenSize();
   const [campingScale, campingPosition] = adjustCampingForScreenSize();
   const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
   const [cyclistAnimatedScale, cyclistAnimatedPosition] = adjustCyclistAnimatedForScreenSize();
@@ -123,13 +137,20 @@ const Home = () => {
             setIsRotating={setIsRotating}
             setCurrentStage={setCurrentStage}
           />
-          {/*<Tulia
+          <Tulia
             setIsRotating={setIsRotating}
             isRotating={isRotating}
             position={tuliaPosition}
             rotation={[0.1, 0.7077, 0]}
             scale={tuliaScale}
-          />     
+          />
+          <Cello
+            setIsRotating={setIsRotating}
+            isRotating={isRotating}
+            position={celloPosition}
+            rotation={[-0.1, 5.7077, 0]}
+            scale={celloScale}
+          />        
           <CyclistAnimated
             isRotating={isRotating}
             setIsRotating={setIsRotating}
@@ -137,7 +158,7 @@ const Home = () => {
             position={cyclistAnimatedPosition}
             rotation={[0.1, 0.7077, 0]}
             scale={cyclistAnimatedScale}
-          />*/}
+          />
         </Suspense>
       </Canvas>
 
