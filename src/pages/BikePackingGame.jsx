@@ -6,6 +6,7 @@ import { SceneSelector } from '../components/SceneSelector'
 import { CyclistAnimated } from '../models/CyclistAnimated'
 import { Suspense, useState, useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
+import { SnowScene } from '../components/SnowScene'
 
 // Camera component that follows the cyclist
 function Camera({ cyclistPosition, cameraAngle, cameraDistance, cameraHeight }) {
@@ -65,33 +66,11 @@ const isPositionSafe = (position, objects) => {
   return true
 }
 
-export default function BikePackingGame() {
-  const [isRotating, setIsRotating] = useState(false)
-  const [currentStage, setCurrentStage] = useState(1)
-  const [currentFocusPoint, setCurrentFocusPoint] = useState(null)
-  const [cyclistPosition, setCyclistPosition] = useState([0, 0, 0])
-  const [cyclistRotation, setCyclistRotation] = useState(0)
-  const [movementSpeed] = useState(0.1)
-  const [activeKeys, setActiveKeys] = useState(new Set())
-  const [lastValidPosition, setLastValidPosition] = useState([0, 0, 0])
-  const [cameraAngle, setCameraAngle] = useState(0)
-  const [isMouseDown, setIsMouseDown] = useState(false)
-  const [lastMouseX, setLastMouseX] = useState(0)
-  const [cameraDistance, setCameraDistance] = useState(5)
-  const [cameraHeight, setCameraHeight] = useState(2)
-  const [rotationSpeed, setRotationSpeed] = useState(0.001)
-  const [isAutoRotating, setIsAutoRotating] = useState(true)
-  const [manualRotation, setManualRotation] = useState(0)
-  const [isRightMouseDown, setIsRightMouseDown] = useState(false)
-  const [sceneRotation, setSceneRotation] = useState(0)
-  const [currentScene, setCurrentScene] = useState('forest')
-  const [showSceneSelector, setShowSceneSelector] = useState(true)
-  const [isGameStarted, setIsGameStarted] = useState(false)
+// Function to get scene objects based on current scene
+const getSceneObjects = (scene) => {
+  const objects = []
 
-  // Define all objects in the scene
-  const sceneObjects = useMemo(() => {
-    const objects = []
-
+  if (scene === 'forest') {
     // Add trees (50 trees with random positions)
     for (let i = 0; i < 50; i++) {
       objects.push({
@@ -116,28 +95,115 @@ export default function BikePackingGame() {
       })
     }
 
-    // Add houses
-    objects.push(
-      { position: [-15, 0, -15], radius: 2 }, // Campsite
-      { position: [15, 0, -15], radius: 2.5 }, // Computer House
-      { position: [0, 0, 15], radius: 4 } // Theater
-    )
-
     // Add river
     objects.push({
       position: [0, 0, 0],
       radius: 1,
       isRiver: true
     })
+  } else if (scene === 'snow') {
+    // Add snowmen (15 snowmen with random positions)
+    for (let i = 0; i < 15; i++) {
+      objects.push({
+        position: [
+          Math.random() * 40 - 20,
+          0,
+          Math.random() * 40 - 20
+        ],
+        radius: 1
+      })
+    }
 
-    return objects
-  }, [])
+    // Add pine trees (30 trees with random positions)
+    for (let i = 0; i < 30; i++) {
+      objects.push({
+        position: [
+          Math.random() * 40 - 20,
+          0,
+          Math.random() * 40 - 20
+        ],
+        radius: 0.5
+      })
+    }
+
+    // Add ice lake
+    objects.push({
+      position: [0, 0, 0],
+      radius: 2,
+      isLake: true
+    })
+  } else if (scene === 'desert') {
+    // Add cacti (30 cacti with random positions)
+    for (let i = 0; i < 30; i++) {
+      objects.push({
+        position: [
+          Math.random() * 40 - 20,
+          0,
+          Math.random() * 40 - 20
+        ],
+        radius: 0.5
+      })
+    }
+
+    // Add sand dunes (8 dunes with random positions)
+    for (let i = 0; i < 8; i++) {
+      objects.push({
+        position: [
+          Math.random() * 40 - 20,
+          0,
+          Math.random() * 40 - 20
+        ],
+        radius: 2
+      })
+    }
+
+    // Add oasis
+    objects.push({
+      position: [0, 0, 0],
+      radius: 1.5,
+      isOasis: true
+    })
+  }
+
+  // Add houses (common to all scenes)
+  objects.push(
+    { position: [-15, 0, -15], radius: 2 }, // Campsite
+    { position: [15, 0, -15], radius: 2.5 }, // Computer House
+    { position: [0, 0, 15], radius: 4 } // Theater
+  )
+
+  return objects
+}
+
+export default function BikePackingGame() {
+  const [isRotating, setIsRotating] = useState(false)
+  const [currentStage, setCurrentStage] = useState(1)
+  const [currentFocusPoint, setCurrentFocusPoint] = useState(null)
+  const [cyclistPosition, setCyclistPosition] = useState([0, 0, 0])
+  const [cyclistRotation, setCyclistRotation] = useState(0)
+  const [movementSpeed] = useState(0.1)
+  const [activeKeys, setActiveKeys] = useState(new Set())
+  const [lastValidPosition, setLastValidPosition] = useState([0, 0, 0])
+  const [cameraAngle, setCameraAngle] = useState(0)
+  const [isMouseDown, setIsMouseDown] = useState(false)
+  const [lastMouseX, setLastMouseX] = useState(0)
+  const [cameraDistance, setCameraDistance] = useState(5)
+  const [cameraHeight, setCameraHeight] = useState(2)
+  const [rotationSpeed, setRotationSpeed] = useState(0.001)
+  const [isAutoRotating, setIsAutoRotating] = useState(true)
+  const [manualRotation, setManualRotation] = useState(0)
+  const [isRightMouseDown, setIsRightMouseDown] = useState(false)
+  const [sceneRotation, setSceneRotation] = useState(0)
+  const [currentScene, setCurrentScene] = useState('forest')
+  const [showSceneSelector, setShowSceneSelector] = useState(true)
+  const [isGameStarted, setIsGameStarted] = useState(false)
 
   // Find a safe starting position
   useEffect(() => {
     const findSafePosition = () => {
       let attempts = 0
       let position = [0, 0, 0]
+      const sceneObjects = getSceneObjects(currentScene)
       
       while (!isPositionSafe(position, sceneObjects) && attempts < 100) {
         position = [
@@ -159,7 +225,7 @@ export default function BikePackingGame() {
     const safePosition = findSafePosition()
     setCyclistPosition(safePosition)
     setLastValidPosition(safePosition)
-  }, [sceneObjects])
+  }, [currentScene])
 
   // Handle collisions
   const handleCollision = (type) => {
@@ -344,7 +410,7 @@ export default function BikePackingGame() {
 
   const handlePositionChange = (newPosition) => {
     // Check for collisions before updating position
-    if (isPositionSafe(newPosition, sceneObjects)) {
+    if (isPositionSafe(newPosition, getSceneObjects(currentScene))) {
       setCyclistPosition(newPosition)
       setLastValidPosition(newPosition)
     } else {
@@ -359,36 +425,46 @@ export default function BikePackingGame() {
   }
 
   return (
-    <div className="w-full h-screen">
+    <div className="relative w-full h-screen">
       {showSceneSelector && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold mb-6 text-center">Select Environment</h2>
-            <div className="flex gap-4">
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+            <h2 className="text-2xl font-bold mb-6 text-center">Select World</h2>
+            <div className="space-y-4">
               <button
-                className={`px-6 py-3 rounded-lg transition-colors ${
-                  currentScene === 'forest'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
                 onClick={() => handleSceneSelect('forest')}
+                className="w-full py-3 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
               >
-                Forest
+                Forest Scene
               </button>
               <button
-                className={`px-6 py-3 rounded-lg transition-colors ${
-                  currentScene === 'desert'
-                    ? 'bg-yellow-600 text-white'
-                    : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-                onClick={() => handleSceneSelect('desert')}
+                onClick={() => handleSceneSelect('snow')}
+                className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Desert
+                Snow Scene
+              </button>
+              <button
+                onClick={() => handleSceneSelect('desert')}
+                className="w-full py-3 px-4 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors"
+              >
+                Desert Scene
               </button>
             </div>
           </div>
         </div>
       )}
+
+      {isGameStarted && (
+        <div className="absolute top-4 right-4 z-50">
+          <button
+            onClick={handleBackToMenu}
+            className="bg-white text-gray-800 px-4 py-2 rounded-lg shadow-lg hover:bg-gray-100 transition-colors"
+          >
+            Back to Menu
+          </button>
+        </div>
+      )}
+
       <Canvas
         shadows
         camera={{ position: [0, 5, 10], fov: 50 }}
@@ -409,6 +485,11 @@ export default function BikePackingGame() {
                 <Environment preset={currentScene === 'forest' ? 'forest' : 'sunset'} />
                 {currentScene === 'forest' ? (
                   <ForestScene 
+                    cyclistPosition={cyclistPosition}
+                    onCollision={handleCollision}
+                  />
+                ) : currentScene === 'snow' ? (
+                  <SnowScene 
                     cyclistPosition={cyclistPosition}
                     onCollision={handleCollision}
                   />
@@ -442,14 +523,6 @@ export default function BikePackingGame() {
           )}
         </Suspense>
       </Canvas>
-      {isGameStarted && (
-        <button
-          onClick={handleBackToMenu}
-          className="fixed top-4 right-4 bg-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-100 transition-colors z-50"
-        >
-          Back to Menu
-        </button>
-      )}
     </div>
   )
 } 
