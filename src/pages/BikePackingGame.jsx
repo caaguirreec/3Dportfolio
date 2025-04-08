@@ -342,6 +342,22 @@ export default function BikePackingGame() {
     setSceneRotation(0)
   }
 
+  const handlePositionChange = (newPosition) => {
+    // Check for collisions before updating position
+    if (isPositionSafe(newPosition, sceneObjects)) {
+      setCyclistPosition(newPosition)
+      setLastValidPosition(newPosition)
+    } else {
+      // If collision occurs, reset to last valid position
+      setCyclistPosition(lastValidPosition)
+      handleCollision('object')
+    }
+  }
+
+  const handleRotationChange = (newRotation) => {
+    setCyclistRotation(newRotation[1])
+  }
+
   return (
     <div className="w-full h-screen">
       {showSceneSelector && (
@@ -410,6 +426,8 @@ export default function BikePackingGame() {
                   position={cyclistPosition}
                   rotation={[0, cyclistRotation, 0]}
                   scale={[1, 1, 1]}
+                  onPositionChange={handlePositionChange}
+                  onRotationChange={handleRotationChange}
                 />
               </Scene>
               <OrbitControls

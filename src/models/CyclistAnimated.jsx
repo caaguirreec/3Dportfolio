@@ -10,7 +10,11 @@ export function CyclistAnimated({
     setIsRotating,
     setCurrentStage,
     currentFocusPoint,
-    ...props
+    position,
+    rotation,
+    scale,
+    onPositionChange,
+    onRotationChange
  }) {
   const ref = useRef();
   const { gl, viewport } = useThree();
@@ -19,56 +23,75 @@ export function CyclistAnimated({
   // Get animation actions associated with the tulia
   const { actions } = useAnimations(animations, ref);
   const rotationSpeed = useRef(0);
-  // Handle pointer (mouse or touch) down event
-  const handlePointerDown = (event) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const lastTouchPosition = useRef({ x: 0, y: 0 });
+  const touchStartTime = useRef(0);
+  const isMoving = useRef(false);
+
+  // Handle touch start
+  const handleTouchStart = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const touch = e.touches[0];
+    lastTouchPosition.current = {
+      x: touch.clientX,
+      y: touch.clientY
+    };
+    touchStartTime.current = Date.now();
+    isMoving.current = true;
     setIsRotating(true);
-
-    // Calculate the clientX based on whether it's a touch event or a mouse event
-    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-
-    // Store the current clientX position for reference
-    lastX.current = clientX;
+    actions["M_rig_Action_S"].play();
   };
-      // Handle pointer (mouse or touch) up event
-      const handlePointerUp = (event) => {
-        event.stopPropagation();
-        event.preventDefault();
-        setIsRotating(false);
-      };
-    
-      // Handle pointer (mouse or touch) move event
-      const handlePointerMove = (event) => {
-        // event.stopPropagation();
-        // event.preventDefault();
-        // if (isRotating) {
-        //   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-        //   const delta = (clientX - lastX.current) / viewport.width;
-    
-        //   // Update the island's rotation based on the mouse/touch movement
-        //   ref.current.rotation.y += delta * 0.01 * Math.PI;
-        //   // Update the reference for the last clientX position
-        //   lastX.current = clientX;
-    
-        //   // Update the rotation speed
-        //   rotationSpeed.current = delta * 0.01 * Math.PI;
-        // }
-      };
- // Handle keydown events
- const handleKeyDown = (event) => {
-  actions["M_rig_Action_S"].play();
-    // if (event.key === "ArrowLeft") {
-    //   if (!isRotating) setIsRotating(true);
 
-    //   ref.current.rotation.y -= 0.0005 * Math.PI;
-    //   rotationSpeed.current = 0.007;
-    // } else if (event.key === "ArrowRight") {
-    //   if (!isRotating) setIsRotating(true);
+  // Handle touch move
+  const handleTouchMove = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!isMoving.current) return;
 
-    //   ref.current.rotation.y += 0.0005 * Math.PI;
-    //   rotationSpeed.current = -0.007;
-    // }
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - lastTouchPosition.current.x;
+    const deltaY = touch.clientY - lastTouchPosition.current.y;
+    
+    // Calculate movement based on touch delta
+    const movementSpeed = 0.1;
+    const newPosition = [...position];
+    const newRotation = rotation[1];
+
+    // Move forward/backward based on vertical touch movement
+    if (Math.abs(deltaY) > 5) {
+      newPosition[0] += Math.sin(newRotation) * (deltaY * movementSpeed);
+      newPosition[2] += Math.cos(newRotation) * (deltaY * movementSpeed);
+    }
+
+    // Rotate based on horizontal touch movement
+    if (Math.abs(deltaX) > 5) {
+      const rotationDelta = deltaX * 0.01;
+      onRotationChange([0, newRotation + rotationDelta, 0]);
+    }
+
+    // Update position if it changed
+    if (newPosition[0] !== position[0] || newPosition[2] !== position[2]) {
+      onPositionChange(newPosition);
+    }
+
+    lastTouchPosition.current = {
+      x: touch.clientX,
+      y: touch.clientY
+    };
+  };
+
+  // Handle touch end
+  const handleTouchEnd = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    isMoving.current = false;
+    setIsRotating(false);
+    actions["M_rig_Action_S"].stop();
+  };
+
+  // Handle keydown events
+  const handleKeyDown = (event) => {
+    actions["M_rig_Action_S"].play();
   };
 
   // Handle keyup events
@@ -79,58 +102,34 @@ export function CyclistAnimated({
     }
   };
 
-  // Touch events for mobile devices
-  const handleTouchStart = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsRotating(true);
-  
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    lastX.current = clientX;
-  }
-  
-  const handleTouchEnd = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    setIsRotating(false);
-  }
-  
-  const handleTouchMove = (e) => {
-    e.stopPropagation();
-    e.preventDefault();
-  
-    if (isRotating) {
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const delta = (clientX - lastX.current) / viewport.width;
-  
-      ref.current.rotation.y += delta * 0.01 * Math.PI;
-      lastX.current = clientX;
-      rotationSpeed.current = delta * 0.01 * Math.PI;
-    }
-  }
   // Use an effect to control the tulia's animation based on 'isRotating'
   // Note: Animation names can be found on the Sketchfab website where the 3D model is hosted.
   useEffect(() => {
-    
-    
     const canvas = gl.domElement;
-    canvas.addEventListener("pointerdown", handlePointerDown);
-    canvas.addEventListener("pointerup", handlePointerUp);
-    canvas.addEventListener("pointermove", handlePointerMove);
+    
+    // Add touch event listeners
+    canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+    canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+    canvas.addEventListener("touchend", handleTouchEnd, { passive: false });
+    
+    // Add keyboard event listeners
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-    canvas.addEventListener("touchstart", handleTouchStart);
-    canvas.addEventListener("touchend", handleTouchEnd);
-    canvas.addEventListener("touchmove", handleTouchMove);
-    // if (isRotating) {
-    //   actions["Take 001"].play();
-    // } else {
-    //   actions["Take 001"].stop();
-    // }
-  }, [actions, isRotating]);
+
+    return () => {
+      // Clean up touch event listeners
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchmove", handleTouchMove);
+      canvas.removeEventListener("touchend", handleTouchEnd);
+      
+      // Clean up keyboard event listeners
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [actions, isRotating, position, rotation]);
 
   return (
-    <mesh {...props} ref={ref}>
+    <mesh ref={ref} position={position} rotation={rotation} scale={scale}>
       <primitive object={scene} />
     </mesh>
   );
