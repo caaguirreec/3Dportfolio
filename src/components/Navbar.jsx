@@ -11,27 +11,7 @@ const Navbar = () => {
 
   return (
     <header className='header relative'>
-      <div className="flex justify-between items-center w-full">
-        <NavLink to='/'>
-          <img src={logo} alt='logo' className='w-18 h-18 object-contain' />
-        </NavLink>
-        
-        {/* Horizontal Menu */}
-        <nav className='flex text-lg gap-7 font-medium'>
-          <NavLink to='/about' className={({ isActive }) => isActive ? "text-blue-600" : "text-black" }>
-            About
-          </NavLink>
-          <NavLink to='/projects' className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
-            Projects
-          </NavLink>
-          <NavLink to='/traveling' className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
-            Traveling
-          </NavLink>
-          <NavLink to='/contact' className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
-            Contact
-          </NavLink>
-        </nav>
-
+      <div className="flex items-center w-full">
         {/* Vertical Menu Toggle Button */}
         <button 
           onClick={toggleVerticalMenu}
@@ -52,11 +32,29 @@ const Navbar = () => {
             />
           </svg>
         </button>
+
+        <NavLink to='/' className="ml-2">
+          <img src={logo} alt='logo' className='w-18 h-18 object-contain' />
+        </NavLink>
+        
+        {/* Horizontal Menu */}
+        <nav className='flex text-lg gap-7 font-medium ml-auto'>
+          <NavLink to='/about' className={({ isActive }) => isActive ? "text-blue-600" : "text-black" }>
+            About
+          </NavLink>
+          <NavLink to='/projects' className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
+            Projects
+          </NavLink>
+          <NavLink to='/traveling' className={({ isActive }) => isActive ? "text-blue-600" : "text-black"}>
+            Traveling
+          </NavLink>
+
+        </nav>
       </div>
 
       {/* Vertical Menu */}
       {isVerticalMenuOpen && (
-        <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+        <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
           <NavLink 
             to="/bikepackingame" 
             className={({ isActive }) => 
@@ -66,7 +64,7 @@ const Navbar = () => {
             }
             onClick={() => setIsVerticalMenuOpen(false)}
           >
-            Interactive
+            Bikepacking Game
           </NavLink>
           <NavLink 
             to="/contact" 
