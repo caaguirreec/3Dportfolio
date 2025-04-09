@@ -44,7 +44,76 @@ function River({ position, scale = [1, 1, 1] }) {
   )
 }
 
-export function ForestScene({ cyclistPosition, onCollision }) {
+// New collectible items components
+function Mushroom({ position }) {
+  const mesh = useRef()
+  return (
+    <mesh position={position} ref={mesh}>
+      <cylinderGeometry args={[0.1, 0.2, 0.1, 8]} />
+      <meshStandardMaterial color="#8B4513" />
+      <mesh position={[0, 0.1, 0]}>
+        <sphereGeometry args={[0.2, 8, 8]} />
+        <meshStandardMaterial color="#FF0000" />
+      </mesh>
+    </mesh>
+  )
+}
+
+function Berries({ position }) {
+  const mesh = useRef()
+  return (
+    <group position={position}>
+      <mesh ref={mesh}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#FF0000" />
+      </mesh>
+      <mesh position={[0.2, 0, 0]}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#FF0000" />
+      </mesh>
+      <mesh position={[-0.2, 0, 0]}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#FF0000" />
+      </mesh>
+    </group>
+  )
+}
+
+function Firewood({ position }) {
+  const mesh = useRef()
+  return (
+    <mesh position={position} ref={mesh}>
+      <boxGeometry args={[0.5, 0.1, 0.1]} />
+      <meshStandardMaterial color="#8B4513" />
+    </mesh>
+  )
+}
+
+function Campsite({ position }) {
+  return (
+    <group position={position}>
+      <mesh>
+        <cylinderGeometry args={[1, 1, 0.1, 32]} />
+        <meshStandardMaterial color="#8B4513" />
+      </mesh>
+      <mesh position={[0, 0.2, 0]}>
+        <boxGeometry args={[0.2, 0.4, 0.2]} />
+        <meshStandardMaterial color="#FFA500" />
+      </mesh>
+    </group>
+  )
+}
+
+function Food({ position }) {
+  return (
+    <mesh position={position}>
+      <sphereGeometry args={[0.2, 8, 8]} />
+      <meshStandardMaterial color="#FFD700" />
+    </mesh>
+  )
+}
+
+export function ForestScene({ cyclistPosition, onCollision, collectedItems }) {
   const sceneRef = useRef()
   
   // Generate random positions for trees
@@ -71,6 +140,73 @@ export function ForestScene({ cyclistPosition, onCollision }) {
       ])
     }
     return positions
+  }, [])
+
+  // Generate collectible items
+  const items = useMemo(() => {
+    const items = []
+    
+    // Generate mushrooms
+    for (let i = 0; i < 5; i++) {
+      items.push({
+        type: 'mushroom',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate berries
+    for (let i = 0; i < 8; i++) {
+      items.push({
+        type: 'berries',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate firewood
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'firewood',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate campsites
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'campsite',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate food
+    for (let i = 0; i < 5; i++) {
+      items.push({
+        type: 'food',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    return items
   }, [])
 
   // Check for collisions
@@ -126,6 +262,18 @@ export function ForestScene({ cyclistPosition, onCollision }) {
         onCollision('house')
       }
     })
+
+    // Check for collisions with items
+    items.forEach(item => {
+      const distance = Math.sqrt(
+        Math.pow(cyclistX - item.position[0], 2) +
+        Math.pow(cyclistZ - item.position[2], 2)
+      )
+      
+      if (distance < 1 && !collectedItems.includes(item.type)) {
+        onCollision(item.type)
+      }
+    })
   })
 
   return (
@@ -155,6 +303,26 @@ export function ForestScene({ cyclistPosition, onCollision }) {
       {/* Ambient light */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+
+      {/* Render collectible items */}
+      {items.map((item, index) => {
+        if (collectedItems.includes(item.type)) return null
+        
+        switch (item.type) {
+          case 'mushroom':
+            return <Mushroom key={`mushroom-${index}`} position={item.position} />
+          case 'berries':
+            return <Berries key={`berries-${index}`} position={item.position} />
+          case 'firewood':
+            return <Firewood key={`firewood-${index}`} position={item.position} />
+          case 'campsite':
+            return <Campsite key={`campsite-${index}`} position={item.position} />
+          case 'food':
+            return <Food key={`food-${index}`} position={item.position} />
+          default:
+            return null
+        }
+      })}
     </group>
   )
 } 

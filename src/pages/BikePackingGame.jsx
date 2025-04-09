@@ -1,5 +1,5 @@
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
-import { OrbitControls, Environment } from '@react-three/drei'
+import { OrbitControls, Environment, Text } from '@react-three/drei'
 import { ForestScene } from '../components/ForestScene'
 import { DesertScene } from '../components/DesertScene'
 import { SceneSelector } from '../components/SceneSelector'
@@ -175,6 +175,50 @@ const getSceneObjects = (scene) => {
   return objects
 }
 
+// Game state management
+const INITIAL_ENERGY = 100
+const INITIAL_FOOD = 5
+const ENERGY_DECREASE_RATE = 0.1 // Energy decreases per second
+const FOOD_ENERGY_VALUE = 20 // Energy restored per food item
+
+// Add findSafePosition function
+const findSafePosition = (sceneObjects) => {
+  let attempts = 0;
+  let position;
+  let isSafe = false;
+
+  while (!isSafe && attempts < 100) {
+    // Generate random position within bounds
+    position = [
+      Math.random() * 30 - 15, // x: -15 to 15
+      0,
+      Math.random() * 30 - 15  // z: -15 to 15
+    ];
+
+    // Check if position is safe (not too close to any objects)
+    isSafe = true;
+    for (const obj of sceneObjects) {
+      const distance = Math.sqrt(
+        Math.pow(position[0] - obj.position[0], 2) +
+        Math.pow(position[2] - obj.position[2], 2)
+      );
+      if (distance < obj.radius + 1) { // 1 is cyclist radius
+        isSafe = false;
+        break;
+      }
+    }
+
+    attempts++;
+  }
+
+  // If we couldn't find a safe position after 100 attempts, return a default position
+  if (!isSafe) {
+    return [0, 0, 0];
+  }
+
+  return position;
+};
+
 export default function BikePackingGame() {
   const [isRotating, setIsRotating] = useState(false)
   const [currentStage, setCurrentStage] = useState(1)
@@ -198,56 +242,179 @@ export default function BikePackingGame() {
   const [showSceneSelector, setShowSceneSelector] = useState(true)
   const [isGameStarted, setIsGameStarted] = useState(false)
 
+  // Game state
+  const [energy, setEnergy] = useState(INITIAL_ENERGY)
+  const [food, setFood] = useState(INITIAL_FOOD)
+  const [collectedItems, setCollectedItems] = useState({
+    forest: [],
+    desert: [],
+    snow: []
+  })
+  const [currentObjective, setCurrentObjective] = useState('Find a campsite to rest')
+  const [isCamping, setIsCamping] = useState(false)
+  const [gameTime, setGameTime] = useState(0)
+  const [isGameOver, setIsGameOver] = useState(false)
+  const [showCampsitePopup, setShowCampsitePopup] = useState(false)
+  const [isAtCampsite, setIsAtCampsite] = useState(false)
+
+  // Game objectives for each scene
+  const objectives = {
+    forest: [
+      { id: 'mushroom', name: 'Collect 3 mushrooms', count: 0, required: 3 },
+      { id: 'berries', name: 'Collect 5 berries', count: 0, required: 5 },
+      { id: 'firewood', name: 'Gather firewood', count: 0, required: 1 }
+    ],
+    desert: [
+      { id: 'cactus_flower', name: 'Find 2 cactus flowers', count: 0, required: 2 },
+      { id: 'desert_crystal', name: 'Collect desert crystal', count: 0, required: 1 },
+      { id: 'water', name: 'Fill water bottle', count: 0, required: 1 }
+    ],
+    snow: [
+      { id: 'ice_crystal', name: 'Collect 3 ice crystals', count: 0, required: 3 },
+      { id: 'snow_flower', name: 'Find snow flower', count: 0, required: 1 },
+      { id: 'firewood', name: 'Gather firewood', count: 0, required: 1 }
+    ]
+  }
+
   // Find a safe starting position
   useEffect(() => {
-    const findSafePosition = () => {
-      let attempts = 0
-      let position = [0, 0, 0]
-      const sceneObjects = getSceneObjects(currentScene)
-      
-      while (!isPositionSafe(position, sceneObjects) && attempts < 100) {
-        position = [
-          Math.random() * 30 - 15, // Keep within reasonable bounds
-          0,
-          Math.random() * 30 - 15
-        ]
-        attempts++
-      }
-
-      if (attempts >= 100) {
-        // If we can't find a random safe position, use a known safe position
-        position = [20, 0, 20] // Far from most objects
-      }
-
-      return position
-    }
-
-    const safePosition = findSafePosition()
+    const safePosition = findSafePosition(getSceneObjects(currentScene))
     setCyclistPosition(safePosition)
     setLastValidPosition(safePosition)
   }, [currentScene])
 
-  // Handle collisions
-  const handleCollision = (type) => {
-    // Reset position to last valid position when collision occurs
-    setCyclistPosition(lastValidPosition)
-    
-    // You can add different behaviors based on collision type
-    switch (type) {
-      case 'tree':
-        console.log('Collided with a tree!')
-        break
-      case 'mountain':
-        console.log('Collided with a mountain!')
-        break
-      case 'river':
-        console.log('Collided with the river!')
-        break
-      case 'house':
-        console.log('Collided with a house!')
-        break
+  // Handle energy consumption
+  useEffect(() => {
+    if (!isGameStarted || isCamping || isGameOver) return
+
+    const energyInterval = setInterval(() => {
+      setEnergy(prev => {
+        const newEnergy = prev - ENERGY_DECREASE_RATE
+        if (newEnergy <= 0) {
+          setIsGameOver(true)
+          return 0
+        }
+        return newEnergy
+      })
+    }, 1000)
+
+    return () => clearInterval(energyInterval)
+  }, [isGameStarted, isCamping, isGameOver])
+
+  // Handle game time
+  useEffect(() => {
+    if (!isGameStarted || isGameOver) return
+
+    const timeInterval = setInterval(() => {
+      setGameTime(prev => prev + 1)
+    }, 1000)
+
+    return () => clearInterval(timeInterval)
+  }, [isGameStarted, isGameOver])
+
+  // Handle camping
+  const handleCamping = () => {
+    if (energy < 20) {
+      setIsCamping(true)
+      const campingInterval = setInterval(() => {
+        setEnergy(prev => {
+          const newEnergy = prev + 1
+          if (newEnergy >= 100) {
+            clearInterval(campingInterval)
+            setIsCamping(false)
+            return 100
+          }
+          return newEnergy
+        })
+      }, 1000)
     }
   }
+
+  // Handle food consumption
+  const handleEatFood = () => {
+    if (food > 0) {
+      setFood(prev => prev - 1)
+      setEnergy(prev => Math.min(100, prev + FOOD_ENERGY_VALUE))
+    }
+  }
+
+  // Handle item collection
+  const handleCollectItem = (itemId) => {
+    setCollectedItems(prev => {
+      const newItems = { ...prev }
+      newItems[currentScene].push(itemId)
+      return newItems
+    })
+
+    // Update objectives
+    const currentObjectives = objectives[currentScene]
+    const updatedObjectives = currentObjectives.map(obj => {
+      if (obj.id === itemId) {
+        return { ...obj, count: obj.count + 1 }
+      }
+      return obj
+    })
+
+    // Check if all objectives are completed
+    const allCompleted = updatedObjectives.every(obj => obj.count >= obj.required)
+    if (allCompleted) {
+      setCurrentObjective('All objectives completed! Find a campsite to rest.')
+    }
+  }
+
+  // Handle collisions with interactive objects
+  const handleCollision = (type, position) => {
+    switch (type) {
+      case 'berry':
+      case 'mushroom':
+      case 'food':
+        setFood(prev => prev + 1);
+        // Remove the item from the scene
+        setCollectedItems(prev => ({
+          ...prev,
+          [currentScene]: prev[currentScene].filter(item => 
+            !(item === type && 
+              Math.abs(item.position[0] - position[0]) < 0.5 && 
+              Math.abs(item.position[2] - position[2]) < 0.5)
+          )
+        }));
+        break;
+      case 'campsite':
+        setIsAtCampsite(true);
+        setShowCampsitePopup(true);
+        // Reset game state when at campsite
+        setCyclistPosition([0, 0, 0]);
+        setEnergy(100);
+        setFood(0);
+        setGameTime(0);
+        setIsGameStarted(false);
+        setShowSceneSelector(true);
+        setCurrentScene('forest');
+        setCollectedItems({ forest: [], desert: [], snow: [] });
+        setIsGameOver(false);
+        setIsCamping(false);
+        setCyclistRotation(0);
+        setCameraAngle(0);
+        setManualRotation(0);
+        setSceneRotation(0);
+        setLastValidPosition([0, 0, 0]);
+        setActiveKeys(new Set());
+        setIsRotating(false);
+        setCurrentStage(1);
+        setCurrentFocusPoint(null);
+        break;
+      default:
+        // For other objects, just remove them
+        setCollectedItems(prev => ({
+          ...prev,
+          [currentScene]: prev[currentScene].filter(item => 
+            !(item === type && 
+              Math.abs(item.position[0] - position[0]) < 0.5 && 
+              Math.abs(item.position[2] - position[2]) < 0.5)
+          )
+        }));
+    }
+  };
 
   // Handle mouse events for camera rotation and zoom
   useEffect(() => {
@@ -387,15 +554,18 @@ export default function BikePackingGame() {
     }
   }, [cyclistPosition, cyclistRotation, movementSpeed, activeKeys])
 
+  // Update handleSceneSelect to use findSafePosition
   const handleSceneSelect = (scene) => {
-    setCurrentScene(scene)
-    setShowSceneSelector(false)
-    setIsGameStarted(true)
-    // Reset cyclist position when changing scenes
-    const safePosition = findSafePosition()
-    setCyclistPosition(safePosition)
-    setLastValidPosition(safePosition)
-  }
+    setCurrentScene(scene);
+    setShowSceneSelector(false);
+    setIsGameStarted(true);
+    
+    // Get scene objects and find a safe position
+    const sceneObjects = getSceneObjects(scene);
+    const safePosition = findSafePosition(sceneObjects);
+    setCyclistPosition(safePosition);
+    setLastValidPosition(safePosition);
+  };
 
   const handleBackToMenu = () => {
     setShowSceneSelector(true)
@@ -416,7 +586,7 @@ export default function BikePackingGame() {
     } else {
       // If collision occurs, reset to last valid position
       setCyclistPosition(lastValidPosition)
-      handleCollision('object')
+      handleCollision('object', newPosition)
     }
   }
 
@@ -424,12 +594,99 @@ export default function BikePackingGame() {
     setCyclistRotation(newRotation[1])
   }
 
+  // Add the campsite popup component
+  const CampsitePopup = () => {
+    const handleContinue = () => {
+      // Reset all game states
+      setShowCampsitePopup(false);
+      setIsAtCampsite(false);
+      setCyclistPosition([0, 0, 0]);
+      setEnergy(100);
+      setFood(0);
+      setGameTime(0);
+      setIsGameStarted(false);
+      setShowSceneSelector(true);
+      setCurrentScene('forest');
+      setCollectedItems({ forest: [], desert: [], snow: [] });
+      setIsGameOver(false);
+      setIsCamping(false);
+      setCyclistRotation(0);
+      setCameraAngle(0);
+      setManualRotation(0);
+      setSceneRotation(0);
+      setLastValidPosition([0, 0, 0]);
+      setActiveKeys(new Set());
+      setIsRotating(false);
+      setCurrentStage(1);
+      setCurrentFocusPoint(null);
+    };
+
+    if (!showCampsitePopup) return null;
+
+    return (
+      <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
+          <h2 className="text-2xl font-bold mb-4 text-center">Congratulations!</h2>
+          <p className="text-center mb-6">World passed. You found a campsite to rest for today.</p>
+          <button
+            onClick={handleContinue}
+            className="w-full py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="relative w-full h-screen">
+      {/* Game UI - Moved to bottom right with higher z-index */}
+      <div className="absolute bottom-4 right-4 bg-white bg-opacity-75 p-4 rounded-lg shadow-lg z-50">
+        <div className="space-y-2">
+          <div className="flex items-center space-x-2">
+            <span className="font-bold">Energy:</span>
+            <div className="w-24 h-4 bg-gray-200 rounded-full">
+              <div 
+                className="h-full bg-green-500 rounded-full transition-all duration-300"
+                style={{ width: `${energy}%` }}
+              />
+            </div>
+            <span>{Math.round(energy)}%</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="font-bold">Food:</span>
+            <span>{food}</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="font-bold">Time:</span>
+            <span>{Math.floor(gameTime / 60)}:{(gameTime % 60).toString().padStart(2, '0')}</span>
+          </div>
+          <div className="font-bold text-sm max-w-xs">Objective: {currentObjective}</div>
+          {isCamping && <div className="text-green-600">Resting at campsite...</div>}
+          {isGameOver && <div className="text-red-600">Game Over! You ran out of energy.</div>}
+        </div>
+      </div>
+
+      {/* Controls UI - Moved to bottom left with higher z-index */}
+      <div className="absolute bottom-4 left-4 bg-white bg-opacity-75 p-4 rounded-lg shadow-lg z-50">
+        <div className="space-y-2">
+          <button
+            onClick={handleEatFood}
+            disabled={food === 0}
+            className="px-4 py-2 bg-blue-500 text-white rounded disabled:opacity-50"
+          >
+            Eat Food (Restore Energy)
+          </button>
+          <div className="text-sm">Arrow keys to move, Mouse to look around</div>
+        </div>
+      </div>
+
+      {/* Scene selector */}
       {showSceneSelector && (
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-8 rounded-lg shadow-xl max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-6 text-center">Select World</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">Select Scene</h2>
             <div className="space-y-4">
               <button
                 onClick={() => handleSceneSelect('forest')}
@@ -454,6 +711,7 @@ export default function BikePackingGame() {
         </div>
       )}
 
+      {/* Back to menu button */}
       {isGameStarted && (
         <div className="absolute top-4 right-4 z-50">
           <button
@@ -465,6 +723,9 @@ export default function BikePackingGame() {
         </div>
       )}
 
+      {/* Campsite popup */}
+      <CampsitePopup />
+      
       <Canvas
         shadows
         camera={{ position: [0, 5, 10], fov: 50 }}
@@ -487,29 +748,34 @@ export default function BikePackingGame() {
                   <ForestScene 
                     cyclistPosition={cyclistPosition}
                     onCollision={handleCollision}
+                    collectedItems={collectedItems.forest}
                   />
                 ) : currentScene === 'snow' ? (
                   <SnowScene 
                     cyclistPosition={cyclistPosition}
                     onCollision={handleCollision}
+                    collectedItems={collectedItems.snow}
                   />
                 ) : (
                   <DesertScene 
                     cyclistPosition={cyclistPosition}
                     onCollision={handleCollision}
+                    collectedItems={collectedItems.desert}
                   />
                 )}
-                <CyclistAnimated
-                  isRotating={isRotating}
-                  setIsRotating={setIsRotating}
-                  setCurrentStage={setCurrentStage}
-                  currentFocusPoint={currentFocusPoint}
-                  position={cyclistPosition}
-                  rotation={[0, cyclistRotation, 0]}
-                  scale={[1, 1, 1]}
-                  onPositionChange={handlePositionChange}
-                  onRotationChange={handleRotationChange}
-                />
+                {!isAtCampsite && (
+                  <CyclistAnimated
+                    isRotating={isRotating}
+                    setIsRotating={setIsRotating}
+                    setCurrentStage={setCurrentStage}
+                    currentFocusPoint={currentFocusPoint}
+                    position={cyclistPosition}
+                    rotation={[0, cyclistRotation, 0]}
+                    scale={[1, 1, 1]}
+                    onPositionChange={handlePositionChange}
+                    onRotationChange={handleRotationChange}
+                  />
+                )}
               </Scene>
               <OrbitControls
                 enableZoom={false}

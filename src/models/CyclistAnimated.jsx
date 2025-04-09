@@ -14,7 +14,8 @@ export function CyclistAnimated({
     rotation,
     scale,
     onPositionChange,
-    onRotationChange
+    onRotationChange,
+    onCollision
  }) {
   const ref = useRef();
   const { gl, viewport } = useThree();
@@ -26,6 +27,33 @@ export function CyclistAnimated({
   const lastTouchPosition = useRef({ x: 0, y: 0 });
   const touchStartTime = useRef(0);
   const isMoving = useRef(false);
+
+  // Add collision detection
+  const checkCollisions = (newPosition) => {
+    // Get all objects in the scene
+    const objects = scene.children.filter(child => 
+      child.userData.type === 'berry' || 
+      child.userData.type === 'mushroom' || 
+      child.userData.type === 'food' ||
+      child.userData.type === 'campsite'
+    );
+
+    // Check for collisions
+    objects.forEach(obj => {
+      const distance = Math.sqrt(
+        Math.pow(newPosition[0] - obj.position.x, 2) +
+        Math.pow(newPosition[2] - obj.position.z, 2)
+      );
+
+      if (distance < 1) { // Collision radius
+        // Call onCollision with the object type and position
+        onCollision(obj.userData.type, [obj.position.x, obj.position.y, obj.position.z]);
+        
+        // Remove the object from the scene
+        scene.remove(obj);
+      }
+    });
+  };
 
   // Handle touch start
   const handleTouchStart = (e) => {
@@ -42,7 +70,7 @@ export function CyclistAnimated({
     actions["M_rig_Action_S"].play();
   };
 
-  // Handle touch move
+  // Update handleTouchMove to include collision detection
   const handleTouchMove = (e) => {
     e.stopPropagation();
     e.preventDefault();
@@ -52,24 +80,23 @@ export function CyclistAnimated({
     const deltaX = touch.clientX - lastTouchPosition.current.x;
     const deltaY = touch.clientY - lastTouchPosition.current.y;
     
-    // Calculate movement based on touch delta
     const movementSpeed = 0.1;
     const newPosition = [...position];
     const newRotation = rotation[1];
 
-    // Move forward/backward based on vertical touch movement
     if (Math.abs(deltaY) > 5) {
       newPosition[0] += Math.sin(newRotation) * (deltaY * movementSpeed);
       newPosition[2] += Math.cos(newRotation) * (deltaY * movementSpeed);
+      
+      // Check for collisions when moving
+      checkCollisions(newPosition);
     }
 
-    // Rotate based on horizontal touch movement
     if (Math.abs(deltaX) > 5) {
       const rotationDelta = deltaX * 0.01;
       onRotationChange([0, newRotation + rotationDelta, 0]);
     }
 
-    // Update position if it changed
     if (newPosition[0] !== position[0] || newPosition[2] !== position[2]) {
       onPositionChange(newPosition);
     }
@@ -89,9 +116,38 @@ export function CyclistAnimated({
     actions["M_rig_Action_S"].stop();
   };
 
-  // Handle keydown events
+  // Update handleKeyDown to include collision detection
   const handleKeyDown = (event) => {
     actions["M_rig_Action_S"].play();
+    
+    const newPosition = [...position];
+    const newRotation = rotation[1];
+    let moved = false;
+
+    switch (event.key) {
+      case 'ArrowUp':
+        newPosition[0] += Math.sin(newRotation) * 0.1;
+        newPosition[2] += Math.cos(newRotation) * 0.1;
+        moved = true;
+        break;
+      case 'ArrowDown':
+        newPosition[0] -= Math.sin(newRotation) * 0.1;
+        newPosition[2] -= Math.cos(newRotation) * 0.1;
+        moved = true;
+        break;
+      case 'ArrowLeft':
+        onRotationChange([0, newRotation + 0.1, 0]);
+        break;
+      case 'ArrowRight':
+        onRotationChange([0, newRotation - 0.1, 0]);
+        break;
+    }
+
+    if (moved) {
+      // Check for collisions when moving
+      checkCollisions(newPosition);
+      onPositionChange(newPosition);
+    }
   };
 
   // Handle keyup events

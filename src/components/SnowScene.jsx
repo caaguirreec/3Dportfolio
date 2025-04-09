@@ -53,7 +53,66 @@ function IceLake({ position, scale = [1, 1, 1] }) {
   )
 }
 
-export function SnowScene({ cyclistPosition, onCollision }) {
+// New collectible items components
+function IceCrystal({ position }) {
+  return (
+    <mesh position={position}>
+      <octahedronGeometry args={[0.3]} />
+      <meshStandardMaterial color="#E0FFFF" transparent opacity={0.8} />
+    </mesh>
+  )
+}
+
+function SnowFlower({ position }) {
+  return (
+    <group position={position}>
+      <mesh>
+        <sphereGeometry args={[0.2, 8, 8]} />
+        <meshStandardMaterial color="#FFFFFF" />
+      </mesh>
+      <mesh position={[0, 0.3, 0]}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#FFFFFF" />
+      </mesh>
+    </group>
+  )
+}
+
+function Firewood({ position }) {
+  const mesh = useRef()
+  return (
+    <mesh position={position} ref={mesh}>
+      <boxGeometry args={[0.5, 0.1, 0.1]} />
+      <meshStandardMaterial color="#8B4513" />
+    </mesh>
+  )
+}
+
+function Campsite({ position }) {
+  return (
+    <group position={position}>
+      <mesh>
+        <cylinderGeometry args={[1, 1, 0.1, 32]} />
+        <meshStandardMaterial color="#FFFFFF" />
+      </mesh>
+      <mesh position={[0, 0.2, 0]}>
+        <boxGeometry args={[0.2, 0.4, 0.2]} />
+        <meshStandardMaterial color="#FFA500" />
+      </mesh>
+    </group>
+  )
+}
+
+function Food({ position }) {
+  return (
+    <mesh position={position}>
+      <sphereGeometry args={[0.2, 8, 8]} />
+      <meshStandardMaterial color="#FFD700" />
+    </mesh>
+  )
+}
+
+export function SnowScene({ cyclistPosition, onCollision, collectedItems }) {
   const sceneRef = useRef()
   
   // Generate random positions for snowmen
@@ -80,6 +139,73 @@ export function SnowScene({ cyclistPosition, onCollision }) {
       ])
     }
     return positions
+  }, [])
+
+  // Generate collectible items
+  const items = useMemo(() => {
+    const items = []
+    
+    // Generate ice crystals
+    for (let i = 0; i < 5; i++) {
+      items.push({
+        type: 'ice_crystal',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate snow flowers
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'snow_flower',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate firewood
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'firewood',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate campsites
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'campsite',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate food
+    for (let i = 0; i < 5; i++) {
+      items.push({
+        type: 'food',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    return items
   }, [])
 
   // Check for collisions
@@ -133,6 +259,18 @@ export function SnowScene({ cyclistPosition, onCollision }) {
         onCollision('house')
       }
     })
+
+    // Check for collisions with items
+    items.forEach(item => {
+      const distance = Math.sqrt(
+        Math.pow(cyclistX - item.position[0], 2) +
+        Math.pow(cyclistZ - item.position[2], 2)
+      )
+      
+      if (distance < 1 && !collectedItems.includes(item.type)) {
+        onCollision(item.type)
+      }
+    })
   })
 
   return (
@@ -158,6 +296,26 @@ export function SnowScene({ cyclistPosition, onCollision }) {
 
       {/* Houses */}
       <Houses />
+
+      {/* Render collectible items */}
+      {items.map((item, index) => {
+        if (collectedItems.includes(item.type)) return null
+        
+        switch (item.type) {
+          case 'ice_crystal':
+            return <IceCrystal key={`crystal-${index}`} position={item.position} />
+          case 'snow_flower':
+            return <SnowFlower key={`flower-${index}`} position={item.position} />
+          case 'firewood':
+            return <Firewood key={`firewood-${index}`} position={item.position} />
+          case 'campsite':
+            return <Campsite key={`campsite-${index}`} position={item.position} />
+          case 'food':
+            return <Food key={`food-${index}`} position={item.position} />
+          default:
+            return null
+        }
+      })}
 
       {/* Ambient light */}
       <ambientLight intensity={0.7} />

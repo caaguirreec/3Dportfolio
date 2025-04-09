@@ -35,6 +35,55 @@ function SandDune({ position, scale = [1, 1, 1] }) {
   )
 }
 
+// New collectible items components
+function CactusFlower({ position }) {
+  return (
+    <group position={position}>
+      <mesh>
+        <sphereGeometry args={[0.2, 8, 8]} />
+        <meshStandardMaterial color="#FF69B4" />
+      </mesh>
+      <mesh position={[0, 0.3, 0]}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#FF69B4" />
+      </mesh>
+    </group>
+  )
+}
+
+function DesertCrystal({ position }) {
+  return (
+    <mesh position={position}>
+      <octahedronGeometry args={[0.3]} />
+      <meshStandardMaterial color="#00FFFF" transparent opacity={0.8} />
+    </mesh>
+  )
+}
+
+function WaterBottle({ position }) {
+  return (
+    <group position={position}>
+      <mesh>
+        <cylinderGeometry args={[0.1, 0.1, 0.3, 8]} />
+        <meshStandardMaterial color="#ADD8E6" />
+      </mesh>
+      <mesh position={[0, 0.2, 0]}>
+        <sphereGeometry args={[0.1, 8, 8]} />
+        <meshStandardMaterial color="#ADD8E6" />
+      </mesh>
+    </group>
+  )
+}
+
+function Food({ position }) {
+  return (
+    <mesh position={position}>
+      <sphereGeometry args={[0.2, 8, 8]} />
+      <meshStandardMaterial color="#FFD700" />
+    </mesh>
+  )
+}
+
 // Oasis component
 function Oasis({ position, scale = [1, 1, 1] }) {
   const geometry = new THREE.CircleGeometry(1.5, 32)
@@ -47,7 +96,7 @@ function Oasis({ position, scale = [1, 1, 1] }) {
   )
 }
 
-export function DesertScene({ cyclistPosition, onCollision }) {
+export function DesertScene({ cyclistPosition, onCollision, collectedItems }) {
   const sceneRef = useRef()
   
   // Generate random positions for cacti
@@ -74,6 +123,67 @@ export function DesertScene({ cyclistPosition, onCollision }) {
       ])
     }
     return positions
+  }, [])
+
+  // Generate collectible items
+  const items = useMemo(() => {
+    const items = []
+    
+    // Generate cactus flowers
+    for (let i = 0; i < 4; i++) {
+      items.push({
+        type: 'cactus_flower',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate desert crystals
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'desert_crystal',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate water bottles
+    for (let i = 0; i < 3; i++) {
+      items.push({
+        type: 'water',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    // Generate oasis
+    items.push({
+      type: 'oasis',
+      position: [0, 0, 0]
+    })
+    
+    // Generate food
+    for (let i = 0; i < 5; i++) {
+      items.push({
+        type: 'food',
+        position: [
+          Math.random() * 30 - 15,
+          0,
+          Math.random() * 30 - 15
+        ]
+      })
+    }
+    
+    return items
   }, [])
 
   // Check for collisions
@@ -127,6 +237,18 @@ export function DesertScene({ cyclistPosition, onCollision }) {
         onCollision('house')
       }
     })
+
+    // Check for collisions with items
+    items.forEach(item => {
+      const distance = Math.sqrt(
+        Math.pow(cyclistX - item.position[0], 2) +
+        Math.pow(cyclistZ - item.position[2], 2)
+      )
+      
+      if (distance < 1 && !collectedItems.includes(item.type)) {
+        onCollision(item.type)
+      }
+    })
   })
 
   return (
@@ -156,6 +278,26 @@ export function DesertScene({ cyclistPosition, onCollision }) {
       {/* Ambient light */}
       <ambientLight intensity={0.8} />
       <directionalLight position={[10, 10, 5]} intensity={1.2} castShadow />
+
+      {/* Render collectible items */}
+      {items.map((item, index) => {
+        if (collectedItems.includes(item.type)) return null
+        
+        switch (item.type) {
+          case 'cactus_flower':
+            return <CactusFlower key={`flower-${index}`} position={item.position} />
+          case 'desert_crystal':
+            return <DesertCrystal key={`crystal-${index}`} position={item.position} />
+          case 'water':
+            return <WaterBottle key={`water-${index}`} position={item.position} />
+          case 'oasis':
+            return <Oasis key="oasis" position={item.position} />
+          case 'food':
+            return <Food key={`food-${index}`} position={item.position} />
+          default:
+            return null
+        }
+      })}
     </group>
   )
 } 

@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className='header relative'>
+    <header className='header relative z-[99999]'>
       <div className="flex items-center w-full">
         {/* Vertical Menu Toggle Button */}
         <button 
@@ -54,7 +54,7 @@ const Navbar = () => {
 
       {/* Vertical Menu */}
       {isVerticalMenuOpen && (
-        <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-50">
+        <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-[99999]">
           <NavLink 
             to="/bikepackingame" 
             className={({ isActive }) => 
