@@ -129,8 +129,27 @@ const Contact = () => {
         </Canvas>
     </div>
       <hr className='border-slate-200' />
-        <Gallery />
-        <CTA />
+      
+      {/* Podcast Section */}
+      <div className='py-16'>
+        <h2 className='head-text'>Podcast</h2>
+        <p className='text-slate-500 mt-2 leading-relaxed'>
+          Listen to our adventures and experiences during our bikepacking journey through South America.
+        </p>
+        <div className='mt-8 w-full aspect-video'>
+          <iframe
+            className='w-full h-full rounded-xl'
+            src="https://www.youtube.com/embed/Lv8j5euiVAw"
+            title="Tulia En Bici Al Sur Podcast"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+
+      <hr className='border-slate-200' />
+      <Gallery />
+      <CTA />
       </div>
     </section>
     
