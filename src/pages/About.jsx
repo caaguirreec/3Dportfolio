@@ -4,76 +4,114 @@ import {
 } from "react-vertical-timeline-component";
 import { Link } from "react-router-dom";
 import { CTA } from "../components";
-import { experiences, skills,academy } from "../constants";
-import{paper} from "../assets/icons";
+import { experiences, skills, academy } from "../constants";
+import { paper } from "../assets/icons";
 
 import "react-vertical-timeline-component/style.min.css";
 
+const SkillCategory = ({ title, items }) => (
+  <div className='mb-6'>
+    <h4 className='text-sm font-semibold text-slate-700 uppercase tracking-wider mb-3'>
+      {title}
+    </h4>
+    <div className='flex flex-wrap gap-4'>
+      {items.map((skill) => (
+        <div
+          className='block-container w-16 h-16 sm:w-20 sm:h-20'
+          key={skill.name}
+        >
+          <div className='btn-back rounded-xl' />
+          <div className='btn-front rounded-xl justify-center items-center'>
+            <img
+              src={skill.imageUrl}
+              alt={skill.name}
+              className='w-1/2 h-1/2 object-contain'
+            />
+            <span className='text-xs mt-1'>{skill.name}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 const About = () => {
+  const skillCategories = {
+    "Backend": skills.filter((s) => s.type === "Backend"),
+    "Frontend": skills.filter((s) => s.type === "Frontend"),
+    "Cloud & AI": skills.filter((s) => s.type === "Cloud & AI"),
+    "Database": skills.filter((s) => s.type === "Database"),
+    "DevOps": skills.filter((s) => s.type === "DevOps"),
+  };
+
   return (
     <section className='max-container'>
+      {/* Professional Introduction */}
       <h1 className='head-text'>
         Hi, I'm{" "}
         <span className='blue-gradient_text font-semibold drop-shadow'>
-          {" "}
-          César
-        </span>{" "}
-        👋
+          César Aguirre
+        </span>
       </h1>
 
       <div className='mt-5 flex flex-col gap-3 text-slate-500'>
-        <p>
-          Software Engineer based in Colombia, specializing in building digital solutions.
+        <p className='text-lg leading-relaxed'>
+          Senior Full-Stack Engineer with 12+ years building scalable web applications,
+          SaaS platforms, and AI-powered products. I specialize in Python, Node.js,
+          React, and AWS — from architecting distributed systems to leading engineering
+          teams that ship production-ready solutions.
         </p>
-      </div>
-
-      <div className='py-10 flex flex-col'>
-        <h3 className='subhead-text'>My Tech skills</h3>
-
-        <div className='mt-16 flex flex-wrap gap-12'>
-          {skills.map((skill) => (
-            <div className='block-container w-20 h-20' key={skill.name}>
-              
-              <div className='btn-back rounded-xl' />
-              
-              <div className='btn-front rounded-xl justify-center items-center'>
-              
-                <img
-                  src={skill.imageUrl}
-                  alt={skill.name}
-                  className='w-1/2 h-1/2 object-contain'
-                />  
-                {skill.name}              
-              </div>
-            </div>
-            
-          ))}
+        <div className='flex flex-wrap gap-3 mt-2'>
+          <span className='px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium'>
+            Full-Stack Development
+          </span>
+          <span className='px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-medium'>
+            AI / LLM Integration
+          </span>
+          <span className='px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm font-medium'>
+            Technical Leadership
+          </span>
+          <span className='px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-sm font-medium'>
+            Cloud Architecture (AWS)
+          </span>
         </div>
       </div>
 
+      {/* Tech Skills - Categorized */}
+      <div className='py-10 flex flex-col'>
+        <h3 className='subhead-text'>Technical Skills</h3>
+        <div className='mt-8'>
+          {Object.entries(skillCategories).map(([category, categorySkills]) =>
+            categorySkills.length > 0 ? (
+              <SkillCategory
+                key={category}
+                title={category}
+                items={categorySkills}
+              />
+            ) : null
+          )}
+        </div>
+      </div>
+
+      {/* Work Experience */}
       <div className='py-16'>
-        <h3 className='subhead-text'>Work Experience.</h3>
+        <h3 className='subhead-text'>Professional Experience</h3>
         <div className='mt-5 flex flex-col gap-3 text-slate-500'>
           <p>
-            I've worked with all sorts of companies, leveling up my skills and
-            teaming up with smart people. Here's the rundown:
+            From IoT prototyping to AI-powered SaaS — here's my journey building
+            impactful products across startups and enterprises:
           </p>
         </div>
 
         <div className='mt-12 flex'>
           <VerticalTimeline>
-            {experiences.map((experience, index) => (
+            {experiences.map((experience) => (
               <VerticalTimelineElement
-                key={experience.company_name}
+                key={`${experience.company_name}-${experience.date}`}
                 date={experience.date}
                 iconStyle={{ background: experience.iconBg }}
                 icon={
                   <div className='flex justify-center items-center w-full h-full'>
-                    {/*<img
-                      src={experience.icon}
-                      alt={experience.company_name}
-                      className='w-[60%] h-[60%] object-contain'
-                    />*/}
                   </div>
                 }
                 contentStyle={{
@@ -110,18 +148,22 @@ const About = () => {
           </VerticalTimeline>
         </div>
 
-
-
-
-
-        <h3 className='subhead-text'>Academy background</h3>
+        {/* Academy */}
+        <h3 className='subhead-text mt-16'>Education & Research</h3>
+        <div className='mt-5 flex flex-col gap-3 text-slate-500'>
+          <p>
+            My academic background in electronic engineering and machine learning
+            research laid the foundation for my engineering career, with 3 peer-reviewed
+            publications in IEEE and Springer.
+          </p>
+        </div>
         <div className='mt-12 flex'>
           <VerticalTimeline>
-            {academy.map((academy, index) => (
+            {academy.map((item) => (
               <VerticalTimelineElement
-                key={academy.institution}
-                date={academy.date}
-                iconStyle={{ background: academy.iconBg }}
+                key={item.institution + item.date}
+                date={item.date}
+                iconStyle={{ background: item.iconBg }}
                 icon={
                   <div className='flex justify-center items-center w-full h-full'>
                   </div>
@@ -129,24 +171,24 @@ const About = () => {
                 contentStyle={{
                   borderBottom: "8px",
                   borderStyle: "solid",
-                  borderBottomColor: academy.iconBg,
+                  borderBottomColor: item.iconBg,
                   boxShadow: "none",
                 }}
               >
                 <div>
                   <h3 className='text-black text-xl font-poppins font-semibold'>
-                    {academy.title}
+                    {item.title}
                   </h3>
                   <p
                     className='text-black-500 font-medium text-base'
                     style={{ margin: 0 }}
                   >
-                    {academy.institution}
+                    {item.institution}
                   </p>
                 </div>
 
                 <ul className='my-5 list-disc ml-5 space-y-2'>
-                  {academy.points.map((point, index) => (
+                  {item.points.map((point, index) => (
                     <li
                       key={`academy-point-${index}`}
                       className='text-black-500/50 font-normal pl-1 text-sm'
@@ -155,28 +197,37 @@ const About = () => {
                     </li>
                   ))}
                 </ul>
-                <p
-                    className='text-black-500 font-medium text-base'
-                    style={{ margin: 0 }}
-                  >
-                    Publications:
-                  </p>
-                <div className='mt-16 flex flex-wrap gap-12'>
-                {academy.publications.map((publication, index) => (  
-                  
-                <Link key={publication.name} to={publication.url} target='_blank'>                   
-                  <img
+                {item.publications && item.publications.length > 0 && (
+                  <>
+                    <p className='text-black-500 font-medium text-sm mt-4'>
+                      Publications:
+                    </p>
+                    <div className='mt-3 flex flex-wrap gap-4'>
+                      {item.publications.map((publication) => (
+                        <Link
+                          key={publication.name}
+                          to={publication.url}
+                          target='_blank'
+                          className='flex items-center gap-2 text-blue-600 hover:text-blue-800 text-xs transition-colors'
+                          title={publication.name}
+                        >
+                          <img
                             src={paper}
                             alt={publication.name}
-                  />
-                </Link>
-                
-                ))}
-                </div>
+                            className='w-6 h-6'
+                          />
+                          <span className='max-w-[200px] truncate'>
+                            {publication.name}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
               </VerticalTimelineElement>
             ))}
           </VerticalTimeline>
-        </div>  
+        </div>
       </div>
 
       <hr className='border-slate-200' />

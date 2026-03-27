@@ -55,18 +55,7 @@ const Navbar = () => {
       {/* Vertical Menu */}
       {isVerticalMenuOpen && (
         <div className="absolute left-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-[99999]">
-          <NavLink 
-            to="/bikepackingame" 
-            className={({ isActive }) => 
-              `block px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors ${
-                isActive ? "text-blue-600 bg-blue-50" : ""
-              }`
-            }
-            onClick={() => setIsVerticalMenuOpen(false)}
-          >
-            Bikepacking Game
-          </NavLink>
-          <NavLink 
+          <NavLink
             to="/contact" 
             className={({ isActive }) => 
               `block px-4 py-2 text-gray-800 hover:bg-blue-50 transition-colors ${

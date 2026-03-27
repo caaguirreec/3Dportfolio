@@ -1,10 +1,30 @@
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 
 import sakura from "../assets/sakura.mp3";
-import { HomeInfo, Loader } from "../components";
+import { Loader } from "../components";
 import { soundoff, soundon } from "../assets/icons";
-import { Tulia, Cyclist, CyclistAnimated, Camping, Sky,Cello } from "../models";
+import {
+  Terrain,
+  BikeController,
+  TrailPath,
+  TRAIL_STOPS,
+  TrailUI,
+  Trees,
+  Rocks,
+  Bushes,
+  GrassPatches,
+  Wildflowers,
+  Water,
+  Clouds,
+  Campfire,
+  Tent,
+  ClimbingWall,
+  PrayerFlags,
+  Husky,
+} from "../world";
+import { heightAt } from "../world/Terrain";
 
 const Home = () => {
   const audioRef = useRef(new Audio(sakura));
@@ -12,162 +32,104 @@ const Home = () => {
   audioRef.current.loop = true;
 
   const [currentStage, setCurrentStage] = useState(1);
-  const [isRotating, setIsRotating] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  const bikePositionRef = useRef(new THREE.Vector3(0, 0, 0));
+
+  useEffect(() => {
+    setIsMobile("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   useEffect(() => {
     if (isPlayingMusic) {
       audioRef.current.play();
     }
-
     return () => {
       audioRef.current.pause();
     };
   }, [isPlayingMusic]);
-  const adjustCelloForScreenSize = () => {
-    let screenScale, screenPosition;
 
-    // If screen width is less than 768px, adjust the scale and position
-    if (window.innerWidth < 768) {
-      screenScale = [2.2, 2.2, 2.2];
-      screenPosition = [-5, -4, -4];
-    } else {
-      screenScale = [2.2, 2.2, 2.2];
-      screenPosition = [5, -4, -4];
+  // Detect which trail stop the bike is near
+  const handleStageChange = useCallback((x, z) => {
+    let nearestStage = null;
+    for (const stop of TRAIL_STOPS) {
+      const dx = x - stop.position[0];
+      const dz = z - stop.position[2];
+      const dist = Math.sqrt(dx * dx + dz * dz);
+      if (dist < stop.radius) {
+        nearestStage = stop.stage;
+        break;
+      }
     }
+    setCurrentStage(nearestStage);
+  }, []);
 
-    return [screenScale, screenPosition];
-  };
-  const adjustTuliaForScreenSize = () => {
-    let screenScale, screenPosition;
-
-    // If screen width is less than 768px, adjust the scale and position
-    if (window.innerWidth < 768) {
-      screenScale = [1.2, 1.2, 1.2];
-      screenPosition = [-3, -4, -4];
-    } else {
-      screenScale = [1.2, 1.2, 1.2];
-      screenPosition = [-3, -4, -4];
-    }
-
-    return [screenScale, screenPosition];
-  };
-
-  const adjustCampingForScreenSize  = () => {
-    let screenScale, screenPosition;
-
-    if (window.innerWidth < 768) {
-      screenScale = [4.2, 4.2, 4.2];
-      screenPosition = [10, -29.5, -73.4];
-    } else {
-      screenScale = [3.8, 3.8, 3.8];
-      screenPosition = [10, -29.5, -73.4];
-    }
-
-    return [screenScale, screenPosition];
-  };
-  const adjustCyclistForScreenSize = () => {
-    let screenScale, screenPosition;
-
-    if (window.innerWidth < 768) {
-      screenScale = [1.5, 1.5, 1.5];
-      screenPosition = [0.1, -0.3, 2];
-    } else {
-      screenScale = [1.0, 1.0, 1.0];
-      screenPosition = [-0.1, -0.3, 2];
-    }
-    return [screenScale, screenPosition];
-  };
-  const adjustCyclistAnimatedForScreenSize = () => {
-    let screenScale, screenPosition;
-
-    if (window.innerWidth < 768) {
-      screenScale = [1.5, 1.5, 1.5];
-      screenPosition = [0.1, -0.3, 2];
-    } else {
-      screenScale = [0.5, 0.5, 0.5];
-      screenPosition = [-0.5, -1.4, 2];
-    }
-    return [screenScale, screenPosition];
-  };
-
-  const [tuliaScale, tuliaPosition] = adjustTuliaForScreenSize();
-  const [celloScale, celloPosition] = adjustCelloForScreenSize();
-  const [campingScale, campingPosition] = adjustCampingForScreenSize();
-  const [cyclistScale, cyclistPosition] = adjustCyclistForScreenSize();
-  const [cyclistAnimatedScale, cyclistAnimatedPosition] = adjustCyclistAnimatedForScreenSize();
+  // Pre-compute stop positions with terrain height (smaller world)
+  const campsitePos = [-15, heightAt(-15, -20), -20];
+  const climbingPos = [-25, heightAt(-25, 25) + 5, 25];
+  const summitPos = [5, heightAt(5, 40) + 0.5, 40];
 
   return (
-    <section className='w-full h-screen relative'>
-      <div className='absolute top-28 left-0 right-0 z-[1] flex items-center justify-center'>
-        {currentStage && <HomeInfo currentStage={currentStage} />}
-      </div>
+    <section className="w-full h-screen relative">
+      <TrailUI currentStage={currentStage} isMobile={isMobile} />
 
       <Canvas
-        
-        className={`w-full h-screen bg-transparent ${
-          isRotating ? "cursor-grabbing" : "cursor-grab"
-        }`}
-        camera={{ near: 0.9, far: 100000 }}
-
+        className="w-full h-screen bg-transparent"
+        camera={{ fov: 60, near: 0.1, far: 150, position: [0, 8, -10] }}
+        shadows={false}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
       >
         <Suspense fallback={<Loader />}>
-          <directionalLight position={[1, 1, 1]} intensity={2} />
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 5, 10]} intensity={3} />
-          <spotLight
-            position={[0, 50, 10]}
-            angle={0.15}
-            penumbra={1}
-            intensity={2}
+          {/* Lighting — keep minimal for performance */}
+          <ambientLight intensity={0.6} />
+          <directionalLight
+            position={[60, 80, 40]}
+            intensity={1.2}
+            color="#fff5e6"
           />
-          <hemisphereLight
-            skyColor='#b1e1ff'
-            groundColor='#000000'
-            intensity={1}
+          <hemisphereLight skyColor="#87ceeb" groundColor="#4a7c3f" intensity={0.4} />
+
+          {/* Sky gradient */}
+          <fog attach="fog" args={["#c9e8ff", 30, 85]} />
+          <color attach="background" args={["#87ceeb"]} />
+
+          {/* World */}
+          <Terrain />
+          <TrailPath />
+          <Trees />
+          <Rocks />
+          <Bushes />
+          <GrassPatches />
+          <Wildflowers />
+          <Water />
+          <Clouds />
+
+          {/* Stop decorations */}
+          <Campfire position={campsitePos} />
+          <Tent position={[campsitePos[0] - 2, campsitePos[1], campsitePos[2] + 1.5]} />
+          <ClimbingWall position={climbingPos} />
+          <PrayerFlags position={summitPos} />
+
+          {/* Player */}
+          <BikeController
+            bikePositionRef={bikePositionRef}
+            onStageChange={handleStageChange}
           />
-          
-         
-          <Sky />
-          <Camping 
-            isRotating={isRotating} 
-            position={campingPosition}
-            rotation={[0, 4.9, 0]}
-            scale={campingScale}
-            setIsRotating={setIsRotating}
-            setCurrentStage={setCurrentStage}
-          />
-         {/* <Tulia
-            setIsRotating={setIsRotating}
-            isRotating={isRotating}
-            position={tuliaPosition}
-            rotation={[0.1, 0.7077, 0]}
-            scale={tuliaScale}
-          />
-          <Cello
-            setIsRotating={setIsRotating}
-            isRotating={isRotating}
-            position={celloPosition}
-            rotation={[-0.1, 5.7077, 0]}
-            scale={celloScale}
-          />        
-          <CyclistAnimated
-            isRotating={isRotating}
-            setIsRotating={setIsRotating}
-            setCurrentStage={setCurrentStage}
-            position={cyclistAnimatedPosition}
-            rotation={[0.1, 0.7077, 0]}
-            scale={cyclistAnimatedScale}
-          />*/}
+
+          {/* Husky companion */}
+          <Husky bikePosition={bikePositionRef} />
         </Suspense>
       </Canvas>
 
-      <div className='absolute bottom-2 left-2'>
+      {/* Music toggle */}
+      <div className="absolute bottom-2 left-2 z-[3]">
         <img
           src={!isPlayingMusic ? soundoff : soundon}
-          alt='jukebox'
+          alt="jukebox"
           onClick={() => setIsPlayingMusic(!isPlayingMusic)}
-          className='w-10 h-10 cursor-pointer object-contain'
+          className="w-10 h-10 cursor-pointer object-contain"
         />
       </div>
     </section>

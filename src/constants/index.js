@@ -74,44 +74,9 @@ export const gallery =[
 ]
 export const skills = [
     {
-        imageUrl: java,
-        name: "Java",
-        type: "Backend",
-    },
-    {
         imageUrl: python,
         name: "Python",
         type: "Backend",
-    },
-    {
-        imageUrl: aws,
-        name: "AWS",
-        type: "Cloud",
-    },
-    {
-        imageUrl: css,
-        name: "CSS",
-        type: "Frontend",
-    },
-    {
-        imageUrl: express,
-        name: "Express",
-        type: "Backend",
-    },
-    {
-        imageUrl: git,
-        name: "Git",
-        type: "Version Control",
-    },
-    {
-        imageUrl: github,
-        name: "GitHub",
-        type: "Version Control",
-    },
-    {
-        imageUrl: html,
-        name: "HTML",
-        type: "Frontend",
     },
     {
         imageUrl: javascript,
@@ -119,13 +84,13 @@ export const skills = [
         type: "Frontend",
     },
     {
-        imageUrl: mongodb,
-        name: "MongoDB",
-        type: "Database",
+        imageUrl: typescript,
+        name: "TypeScript",
+        type: "Frontend",
     },
     {
-        imageUrl: nodejs,
-        name: "Node.js",
+        imageUrl: java,
+        name: "Java",
         type: "Backend",
     },
     {
@@ -134,11 +99,50 @@ export const skills = [
         type: "Frontend",
     },
     {
-        imageUrl: typescript,
-        name: "TypeScript",
+        imageUrl: nodejs,
+        name: "Node.js",
+        type: "Backend",
+    },
+    {
+        imageUrl: express,
+        name: "Express",
+        type: "Backend",
+    },
+    {
+        imageUrl: aws,
+        name: "AWS",
+        type: "Cloud & AI",
+    },
+    {
+        imageUrl: mongodb,
+        name: "MongoDB",
+        type: "Database",
+    },
+    {
+        imageUrl: git,
+        name: "Git",
+        type: "DevOps",
+    },
+    {
+        imageUrl: github,
+        name: "GitHub",
+        type: "DevOps",
+    },
+    {
+        imageUrl: tailwindcss,
+        name: "Tailwind",
         type: "Frontend",
-    }
-    
+    },
+    {
+        imageUrl: html,
+        name: "HTML5",
+        type: "Frontend",
+    },
+    {
+        imageUrl: css,
+        name: "CSS3",
+        type: "Frontend",
+    },
 ];
 export const academy = [
     {
@@ -184,63 +188,65 @@ export const academy = [
 ]
 export const experiences = [
     {
-        title: "Software development Engineer",
-        company_name: "Playvox",                                    
+        title: "Software Development Engineer",
+        company_name: "Katapult Labs",
         icon: meta,
         iconBg: "#a2d2ff",
-        date: "Jun 2022 - Abr 2024",
-        points: [                                                                                                                                                                        
-            "Design, code and maintain backend code in Python and Node for contact center industry.",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Implementing IA models and integrating them with APIs, and data flows",
-            "Participating in code reviews and providing constructive feedback to other developers.",
-            "Stack: Python(Django and plain)+AWS Lambda+ AWS RDS + AWS Bedrock(IA)",
+        date: "May 2025 - Present",
+        points: [
+            "Architect and deliver full-stack AI-first applications (getbuddy.com, trashie.io), building complete startup ecosystems from backend APIs to frontend interfaces using Python and JavaScript.",
+            "Integrate generative AI and LLM capabilities to automate workflows, reducing manual processing time by ~60%.",
+            "Design scalable cloud infrastructure on AWS supporting rapid iteration across multiple product lines.",
+            "Stack: Python, JavaScript, React, Node.js, AWS (Lambda, S3, Bedrock), MongoDB",
         ],
     },
     {
-        title: "Leader Reasearch & Development",
-        company_name: "IAS Software",
+        title: "Software Development Engineer",
+        company_name: "Playvox",
         icon: starbucks,
         iconBg: "#accbe1",
-        date: "July 2019 - May 2022",
+        date: "Jun 2022 - Apr 2024",
         points: [
-            "Design and build SaaS(software as a service) products, lead a software development team, build, test, reinforce SaaS and manage development teams across projects.",
-            "Managing teams across products, and teach junior developers.",
+            "Engineered backend systems in Python (Django) and Node.js serving contact center operations across enterprise clients.",
+            "Integrated AWS Bedrock AI models into production APIs, enabling intelligent automation of customer interaction analysis.",
+            "Built serverless data pipelines using AWS Lambda and RDS, processing thousands of daily transactions.",
+            "Stack: Python (Django), Node.js, AWS Lambda, RDS, Bedrock",
         ],
     },
     {
-        title: "Software development Engineer",
+        title: "R&D Leader",
+        company_name: "IAS Software",
+        icon: tesla,
+        iconBg: "#fbc3bc",
+        date: "Jul 2019 - May 2022",
+        points: [
+            "Led a team of 6+ engineers designing and launching SaaS products for the insurance and banking sectors.",
+            "Defined technical architecture and business models contributing to product-driven revenue growth.",
+            "Mentored junior developers through code reviews and pair programming, improving team delivery velocity by ~40%.",
+        ],
+    },
+    {
+        title: "Software Development Engineer",
         company_name: "IAS Software",
         icon: tesla,
         iconBg: "#fbc3bc",
         date: "Jul 2017 - Jul 2019",
         points: [
-            "analyze, design, code and maintain industrial complex software systems in the insurance sector",
-            "Consultancy for banking systems regarding frontend and backend architecture for new features",
-            "Implementing responsive design and ensuring cross-browser compatibility.",
+            "Designed and maintained enterprise software systems for the insurance sector, serving thousands of end users.",
+            "Provided frontend and backend architecture consultancy for banking clients integrating new features.",
+            "Implemented responsive cross-browser designs and contributed to code quality standards across the team.",
         ],
     },
     {
-        title: "Web Developer",
-        company_name: "On24",
+        title: "R&D Engineer",
+        company_name: "Vega Energy",
         icon: shopify,
         iconBg: "#b7e4c7",
-        date: "March 2017 - Jun 2017",
+        date: "Jan 2015 - Feb 2017",
         points: [
-            "Developing and maintaining web applications using Java SE, Java EE and other technologies",
-            "Collaborating with cross-functional teams including designers, product managers, and other developers to create high-quality products.",
-            "Participating in code reviews and providing constructive feedback to other developers.",
-        ],
-    },
-    {
-        title: "Research & Development engineer",
-        company_name: "Vega Energy",
-        icon: meta,
-        iconBg: "#a2d2ff",
-        date: "Feb 2014 - Mar 2017",
-        points: [
-            "Research and development of product prototypes related to electronic and mechanic devices in telemetry and the measurement industry. The main tasks included everything from designing electronic schemes, prototypes to coding and deploying firmware, and software in a complex and productive engineering team",
-            "Participating in code reviews and providing constructive feedback to other developers.",
+            "Developed IoT product prototypes for telemetry and industrial measurement, from circuit design to firmware deployment.",
+            "Built embedded software and web interfaces for real-time sensor data visualization.",
+            "Collaborated within a multidisciplinary engineering team delivering production-ready hardware/software systems.",
         ],
     },
 ];
@@ -298,5 +304,12 @@ export const projects = [
         name: 'Houndter',
         description: 'Scraping tool for data analysis on social media.',
         link: 'https://houndter.com/',
+    },
+    {
+        iconUrl: summiz,
+        theme: 'btn-back-yellow',
+        name: 'Objetos Residuales',
+        description: 'Kinetic sound art installation using a Raspberry Pi and DSP to play four independent audio channels through repurposed instruments, controllable via smartphone over a self-hosted Wi-Fi network.',
+        link: 'https://github.com/caaguirreec/Objetos-residuales',
     }
 ];
