@@ -271,25 +271,12 @@ export const socialLinks = [
 
 export const projects = [
     {
-        iconUrl: car2,
-        theme: 'btn-back-red',
-        name: 'Pioneer',
-        description: 'Creation from scratch of a controlled mechanical car with a Raspberry Pi, a camera, and a web interface to control it.',
-        link: 'https://github.com/caaguirreec/PI-oneer',
-    },
-    {
-        iconUrl: threads,
-        theme: 'btn-back-green',
-        name: 'Audiovisual Loop Station',
-        description: 'Pedal loop interface to mix microphone sound waves, recording and save them to create a compound sounds.',
-        link: 'https://github.com/caaguirreec/AudioVisualLoopStation',
-    },
-    {
         iconUrl: car,
         theme: 'btn-back-blue',
         name: 'Bikey App',
         description: 'Web and mobile app for cyclists to increase safety across urban areas by providing real-time tracking information.',
         link: 'https://www.bikey.app/#/landing',
+        category: 'saas',
     },
     {
         iconUrl: snapgram,
@@ -297,6 +284,7 @@ export const projects = [
         name: 'Telliou',
         description: 'Virtual and programatic call centers automated designed for small business.',
         link: 'https://www.telliou.com/',
+        category: 'saas',
     },
     {
         iconUrl: estate,
@@ -304,6 +292,7 @@ export const projects = [
         name: 'Houndter',
         description: 'Scraping tool for data analysis on social media.',
         link: 'https://houndter.com/',
+        category: 'saas',
     },
     {
         iconUrl: summiz,
@@ -311,5 +300,22 @@ export const projects = [
         name: 'Objetos Residuales',
         description: 'Kinetic sound art installation using a Raspberry Pi and DSP to play four independent audio channels through repurposed instruments, controllable via smartphone over a self-hosted Wi-Fi network.',
         link: 'https://github.com/caaguirreec/Objetos-residuales',
-    }
+        category: 'hardware',
+    },
+    {
+        iconUrl: car2,
+        theme: 'btn-back-red',
+        name: 'Pioneer',
+        description: 'Creation from scratch of a controlled mechanical car with a Raspberry Pi, a camera, and a web interface to control it.',
+        link: 'https://github.com/caaguirreec/PI-oneer',
+        category: 'hardware',
+    },
+    {
+        iconUrl: threads,
+        theme: 'btn-back-green',
+        name: 'Audiovisual Loop Station',
+        description: 'Pedal loop interface to mix microphone sound waves, recording and save them to create a compound sounds.',
+        link: 'https://github.com/caaguirreec/AudioVisualLoopStation',
+        category: 'hardware',
+    },
 ];

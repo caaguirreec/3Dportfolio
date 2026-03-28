@@ -922,9 +922,13 @@ function Husky({ bikePosition }) {
     const t = clock.elapsedTime;
     legRefs.current.forEach((leg, i) => {
       if (leg) {
-        const phase = i < 2 ? 0 : Math.PI;
-        const side = i % 2 === 0 ? 0 : Math.PI * 0.3;
-        leg.rotation.x = Math.sin(t * speed + phase + side) * (isRunning ? 0.5 : 0);
+        if (isRunning) {
+          const phase = i < 2 ? 0 : Math.PI;
+          const side = i % 2 === 0 ? 0 : Math.PI * 0.3;
+          leg.rotation.x = Math.sin(t * speed + phase + side) * 0.5;
+        } else {
+          leg.rotation.x += (0 - leg.rotation.x) * 0.1;
+        }
       }
     });
     if (tailRef.current) {
@@ -946,58 +950,214 @@ function Husky({ bikePosition }) {
 
   return (
     <group ref={groupRef} position={[0, 0, 2]}>
-      {/* Body */}
-      <mesh position={[0, 0.55, 0.02]} scale={[0.8, 0.75, 1.4]}><sphereGeometry args={[0.26, 8, 6]} /><meshLambertMaterial color="#5a5a5a" flatShading /></mesh>
-      <mesh position={[0, 0.44, 0.02]} scale={[0.7, 0.45, 1.3]}><sphereGeometry args={[0.24, 7, 5]} /><meshLambertMaterial color="#f0f0f0" flatShading /></mesh>
-      <mesh position={[0, 0.52, 0.32]} scale={[0.85, 0.9, 0.7]}><sphereGeometry args={[0.17, 7, 5]} /><meshLambertMaterial color="#f5f5f5" flatShading /></mesh>
-      <mesh position={[-0.1, 0.62, 0.18]} scale={[0.7, 0.8, 0.9]}><sphereGeometry args={[0.1, 6, 5]} /><meshLambertMaterial color="#555" flatShading /></mesh>
-      <mesh position={[0.1, 0.62, 0.18]} scale={[0.7, 0.8, 0.9]}><sphereGeometry args={[0.1, 6, 5]} /><meshLambertMaterial color="#555" flatShading /></mesh>
-      <mesh position={[0, 0.58, -0.28]} scale={[0.85, 0.8, 0.9]}><sphereGeometry args={[0.18, 7, 5]} /><meshLambertMaterial color="#5a5a5a" flatShading /></mesh>
-      <mesh position={[0, 0.68, -0.05]} scale={[0.6, 0.3, 1.2]}><sphereGeometry args={[0.22, 6, 4]} /><meshLambertMaterial color="#444" flatShading /></mesh>
+      {/* Body — main torso */}
+      <mesh position={[0, 0.55, 0.02]} scale={[0.8, 0.75, 1.4]}>
+        <sphereGeometry args={[0.26, 32, 24]} />
+        <meshStandardMaterial color="#6b6b6b" roughness={0.85} />
+      </mesh>
+      {/* Belly (white underside) */}
+      <mesh position={[0, 0.44, 0.02]} scale={[0.7, 0.45, 1.3]}>
+        <sphereGeometry args={[0.24, 32, 24]} />
+        <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
+      </mesh>
+      {/* Chest (white front) */}
+      <mesh position={[0, 0.52, 0.32]} scale={[0.85, 0.9, 0.7]}>
+        <sphereGeometry args={[0.17, 32, 24]} />
+        <meshStandardMaterial color="#f5f5f5" roughness={0.9} />
+      </mesh>
+      {/* Shoulder muscles */}
+      <mesh position={[-0.1, 0.62, 0.18]} scale={[0.7, 0.8, 0.9]}>
+        <sphereGeometry args={[0.1, 28, 20]} />
+        <meshStandardMaterial color="#5e5e5e" roughness={0.85} />
+      </mesh>
+      <mesh position={[0.1, 0.62, 0.18]} scale={[0.7, 0.8, 0.9]}>
+        <sphereGeometry args={[0.1, 28, 20]} />
+        <meshStandardMaterial color="#5e5e5e" roughness={0.85} />
+      </mesh>
+      {/* Haunches */}
+      <mesh position={[0, 0.58, -0.28]} scale={[0.85, 0.8, 0.9]}>
+        <sphereGeometry args={[0.18, 32, 24]} />
+        <meshStandardMaterial color="#6b6b6b" roughness={0.85} />
+      </mesh>
+      {/* Back ridge (darker fur) */}
+      <mesh position={[0, 0.68, -0.05]} scale={[0.6, 0.3, 1.2]}>
+        <sphereGeometry args={[0.22, 28, 20]} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.9} />
+      </mesh>
+
       {/* Head */}
-      <mesh position={[0, 0.72, 0.48]} scale={[1, 0.9, 0.95]}><sphereGeometry args={[0.16, 8, 6]} /><meshLambertMaterial color="#555" flatShading /></mesh>
-      <mesh position={[-0.08, 0.68, 0.52]} scale={[0.7, 0.6, 0.5]}><sphereGeometry args={[0.08, 5, 4]} /><meshLambertMaterial color="#666" flatShading /></mesh>
-      <mesh position={[0.08, 0.68, 0.52]} scale={[0.7, 0.6, 0.5]}><sphereGeometry args={[0.08, 5, 4]} /><meshLambertMaterial color="#666" flatShading /></mesh>
-      <mesh position={[0, 0.68, 0.63]}><sphereGeometry args={[0.09, 6, 5]} /><meshLambertMaterial color="#f5f5f5" flatShading /></mesh>
-      <mesh position={[0, 0.79, 0.58]} scale={[0.5, 0.6, 0.3]}><sphereGeometry args={[0.06, 5, 4]} /><meshLambertMaterial color="#eee" flatShading /></mesh>
-      <mesh position={[0, 0.65, 0.68]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 0.8]}><cylinderGeometry args={[0.06, 0.08, 0.16, 6]} /><meshLambertMaterial color="#e8e0d8" flatShading /></mesh>
-      <mesh position={[0, 0.67, 0.77]}><sphereGeometry args={[0.035, 5, 4]} /><meshLambertMaterial color="#1a1a1a" flatShading /></mesh>
-      <mesh position={[0, 0.61, 0.72]}><boxGeometry args={[0.06, 0.008, 0.05]} /><meshLambertMaterial color="#333" /></mesh>
-      <mesh ref={tongueRef} position={[0.02, 0.58, 0.72]} scale={[1, 1, 1.2]}><sphereGeometry args={[0.03, 5, 4]} /><meshLambertMaterial color="#e57373" flatShading /></mesh>
-      {/* Eyes */}
-      <mesh position={[-0.07, 0.74, 0.61]}><sphereGeometry args={[0.035, 5, 4]} /><meshLambertMaterial color="#3a3a3a" flatShading /></mesh>
-      <mesh position={[0.07, 0.74, 0.61]}><sphereGeometry args={[0.035, 5, 4]} /><meshLambertMaterial color="#3a3a3a" flatShading /></mesh>
-      <mesh position={[-0.07, 0.74, 0.64]}><sphereGeometry args={[0.025, 6, 4]} /><meshBasicMaterial color="#fff" /></mesh>
-      <mesh position={[0.07, 0.74, 0.64]}><sphereGeometry args={[0.025, 6, 4]} /><meshBasicMaterial color="#fff" /></mesh>
-      <mesh position={[-0.07, 0.74, 0.655]}><sphereGeometry args={[0.018, 5, 4]} /><meshBasicMaterial color="#4fc3f7" /></mesh>
-      <mesh position={[0.07, 0.74, 0.655]}><sphereGeometry args={[0.018, 5, 4]} /><meshBasicMaterial color="#4fc3f7" /></mesh>
-      <mesh position={[-0.07, 0.74, 0.665]}><sphereGeometry args={[0.009, 4, 4]} /><meshBasicMaterial color="#111" /></mesh>
-      <mesh position={[0.07, 0.74, 0.665]}><sphereGeometry args={[0.009, 4, 4]} /><meshBasicMaterial color="#111" /></mesh>
+      <mesh position={[0, 0.72, 0.48]} scale={[1, 0.9, 0.95]}>
+        <sphereGeometry args={[0.16, 32, 24]} />
+        <meshStandardMaterial color="#5e5e5e" roughness={0.85} />
+      </mesh>
+      {/* Cheek fur tufts */}
+      <mesh position={[-0.08, 0.68, 0.52]} scale={[0.7, 0.6, 0.5]}>
+        <sphereGeometry args={[0.08, 24, 20]} />
+        <meshStandardMaterial color="#777" roughness={0.9} />
+      </mesh>
+      <mesh position={[0.08, 0.68, 0.52]} scale={[0.7, 0.6, 0.5]}>
+        <sphereGeometry args={[0.08, 24, 20]} />
+        <meshStandardMaterial color="#777" roughness={0.9} />
+      </mesh>
+      {/* White face mask */}
+      <mesh position={[0, 0.68, 0.63]}>
+        <sphereGeometry args={[0.09, 28, 24]} />
+        <meshStandardMaterial color="#f5f5f5" roughness={0.9} />
+      </mesh>
+      {/* Forehead mark */}
+      <mesh position={[0, 0.79, 0.58]} scale={[0.5, 0.6, 0.3]}>
+        <sphereGeometry args={[0.06, 24, 20]} />
+        <meshStandardMaterial color="#eee" roughness={0.9} />
+      </mesh>
+      {/* Muzzle / snout */}
+      <mesh position={[0, 0.65, 0.68]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 0.8]}>
+        <cylinderGeometry args={[0.055, 0.075, 0.16, 32]} />
+        <meshStandardMaterial color="#e8e0d8" roughness={0.8} />
+      </mesh>
+      {/* Nose */}
+      <mesh position={[0, 0.67, 0.77]}>
+        <sphereGeometry args={[0.033, 24, 20]} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.3} metalness={0.1} />
+      </mesh>
+      {/* Mouth line */}
+      <mesh position={[0, 0.61, 0.72]}>
+        <boxGeometry args={[0.05, 0.006, 0.04]} />
+        <meshStandardMaterial color="#333" roughness={0.7} />
+      </mesh>
+      {/* Tongue */}
+      <mesh ref={tongueRef} position={[0.02, 0.58, 0.72]} scale={[1, 1, 1.2]}>
+        <sphereGeometry args={[0.028, 20, 16]} />
+        <meshStandardMaterial color="#e57373" roughness={0.6} />
+      </mesh>
+
+      {/* Eyes — outer socket */}
+      <mesh position={[-0.07, 0.74, 0.61]}>
+        <sphereGeometry args={[0.034, 24, 20]} />
+        <meshStandardMaterial color="#3a3a3a" roughness={0.8} />
+      </mesh>
+      <mesh position={[0.07, 0.74, 0.61]}>
+        <sphereGeometry args={[0.034, 24, 20]} />
+        <meshStandardMaterial color="#3a3a3a" roughness={0.8} />
+      </mesh>
+      {/* Sclera (white) */}
+      <mesh position={[-0.07, 0.74, 0.64]}>
+        <sphereGeometry args={[0.024, 24, 20]} />
+        <meshBasicMaterial color="#fff" />
+      </mesh>
+      <mesh position={[0.07, 0.74, 0.64]}>
+        <sphereGeometry args={[0.024, 24, 20]} />
+        <meshBasicMaterial color="#fff" />
+      </mesh>
+      {/* Iris (blue) */}
+      <mesh position={[-0.07, 0.74, 0.655]}>
+        <sphereGeometry args={[0.017, 24, 20]} />
+        <meshStandardMaterial color="#4fc3f7" roughness={0.2} metalness={0.1} />
+      </mesh>
+      <mesh position={[0.07, 0.74, 0.655]}>
+        <sphereGeometry args={[0.017, 24, 20]} />
+        <meshStandardMaterial color="#4fc3f7" roughness={0.2} metalness={0.1} />
+      </mesh>
+      {/* Pupil */}
+      <mesh position={[-0.07, 0.74, 0.665]}>
+        <sphereGeometry args={[0.009, 16, 12]} />
+        <meshBasicMaterial color="#111" />
+      </mesh>
+      <mesh position={[0.07, 0.74, 0.665]}>
+        <sphereGeometry args={[0.009, 16, 12]} />
+        <meshBasicMaterial color="#111" />
+      </mesh>
+      {/* Eye highlight */}
+      <mesh position={[-0.065, 0.745, 0.668]}>
+        <sphereGeometry args={[0.004, 12, 10]} />
+        <meshBasicMaterial color="#fff" />
+      </mesh>
+      <mesh position={[0.075, 0.745, 0.668]}>
+        <sphereGeometry args={[0.004, 12, 10]} />
+        <meshBasicMaterial color="#fff" />
+      </mesh>
+
       {/* Ears */}
-      <mesh ref={(el) => (earRefs.current[0] = el)} position={[-0.1, 0.9, 0.46]} rotation={[0.15, 0, 0.1]}><coneGeometry args={[0.055, 0.15, 5]} /><meshLambertMaterial color="#444" flatShading /></mesh>
-      <mesh position={[-0.1, 0.89, 0.47]} rotation={[0.15, 0, 0.1]}><coneGeometry args={[0.028, 0.09, 5]} /><meshLambertMaterial color="#e8a0a0" flatShading /></mesh>
-      <mesh ref={(el) => (earRefs.current[1] = el)} position={[0.1, 0.9, 0.46]} rotation={[0.15, 0, -0.1]}><coneGeometry args={[0.055, 0.15, 5]} /><meshLambertMaterial color="#444" flatShading /></mesh>
-      <mesh position={[0.1, 0.89, 0.47]} rotation={[0.15, 0, -0.1]}><coneGeometry args={[0.028, 0.09, 5]} /><meshLambertMaterial color="#e8a0a0" flatShading /></mesh>
+      <mesh ref={(el) => (earRefs.current[0] = el)} position={[-0.1, 0.9, 0.46]} rotation={[0.15, 0, 0.1]}>
+        <coneGeometry args={[0.055, 0.15, 24]} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+      </mesh>
+      <mesh position={[-0.1, 0.89, 0.47]} rotation={[0.15, 0, 0.1]}>
+        <coneGeometry args={[0.028, 0.09, 20]} />
+        <meshStandardMaterial color="#e8a0a0" roughness={0.7} />
+      </mesh>
+      <mesh ref={(el) => (earRefs.current[1] = el)} position={[0.1, 0.9, 0.46]} rotation={[0.15, 0, -0.1]}>
+        <coneGeometry args={[0.055, 0.15, 24]} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.85} />
+      </mesh>
+      <mesh position={[0.1, 0.89, 0.47]} rotation={[0.15, 0, -0.1]}>
+        <coneGeometry args={[0.028, 0.09, 20]} />
+        <meshStandardMaterial color="#e8a0a0" roughness={0.7} />
+      </mesh>
+
       {/* Collar */}
-      <mesh position={[0, 0.62, 0.38]} rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[0.12, 0.018, 6, 10]} /><meshLambertMaterial color="#e74c3c" /></mesh>
-      <mesh position={[0, 0.52, 0.42]}><sphereGeometry args={[0.02, 5, 4]} /><meshLambertMaterial color="#ffd700" /></mesh>
+      <mesh position={[0, 0.62, 0.38]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.12, 0.016, 20, 40]} />
+        <meshStandardMaterial color="#e74c3c" roughness={0.5} />
+      </mesh>
+      {/* Tag */}
+      <mesh position={[0, 0.52, 0.42]}>
+        <sphereGeometry args={[0.018, 16, 12]} />
+        <meshStandardMaterial color="#ffd700" metalness={0.7} roughness={0.2} />
+      </mesh>
+
       {/* Legs */}
       {[[0, -0.12, 0.2], [1, 0.12, 0.2], [2, -0.12, -0.2], [3, 0.12, -0.2]].map(([idx, lx, lz]) => (
         <group key={idx} ref={(el) => (legRefs.current[idx] = el)} position={[lx, 0.38, lz]}>
-          <mesh position={[0, 0.06, 0]}><sphereGeometry args={[idx < 2 ? 0.06 : 0.065, 5, 4]} /><meshLambertMaterial color={idx < 2 ? "#666" : "#5a5a5a"} flatShading /></mesh>
-          <mesh position={[0, -0.02, 0]}><cylinderGeometry args={[0.05, 0.04, 0.2, 6]} /><meshLambertMaterial color={idx < 2 ? "#666" : "#5a5a5a"} flatShading /></mesh>
-          <mesh position={[0, -0.12, 0]}><sphereGeometry args={[0.04, 5, 4]} /><meshLambertMaterial color="#f0f0f0" flatShading /></mesh>
-          <mesh position={[0, -0.22, 0]}><cylinderGeometry args={[0.04, 0.035, 0.18, 6]} /><meshLambertMaterial color="#f0f0f0" flatShading /></mesh>
-          <mesh position={[0, -0.32, 0.02]} scale={[1.1, 0.5, 1.3]}><sphereGeometry args={[0.04, 5, 4]} /><meshLambertMaterial color="#eee" flatShading /></mesh>
+          {/* Shoulder/hip joint */}
+          <mesh position={[0, 0.06, 0]}>
+            <sphereGeometry args={[idx < 2 ? 0.058 : 0.063, 24, 20]} />
+            <meshStandardMaterial color={idx < 2 ? "#6b6b6b" : "#636363"} roughness={0.85} />
+          </mesh>
+          {/* Upper leg */}
+          <mesh position={[0, -0.02, 0]}>
+            <capsuleGeometry args={[0.04, 0.12, 16, 24]} />
+            <meshStandardMaterial color={idx < 2 ? "#6b6b6b" : "#636363"} roughness={0.85} />
+          </mesh>
+          {/* Knee/elbow */}
+          <mesh position={[0, -0.12, 0]}>
+            <sphereGeometry args={[0.038, 20, 16]} />
+            <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
+          </mesh>
+          {/* Lower leg */}
+          <mesh position={[0, -0.22, 0]}>
+            <capsuleGeometry args={[0.032, 0.1, 16, 24]} />
+            <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
+          </mesh>
+          {/* Paw */}
+          <mesh position={[0, -0.32, 0.02]} scale={[1.1, 0.5, 1.3]}>
+            <sphereGeometry args={[0.038, 20, 16]} />
+            <meshStandardMaterial color="#eee" roughness={0.9} />
+          </mesh>
         </group>
       ))}
+
       {/* Tail */}
       <group ref={tailRef} position={[0, 0.7, -0.4]}>
-        <mesh position={[0, 0.04, -0.04]} rotation={[0.6, 0, 0]}><cylinderGeometry args={[0.045, 0.035, 0.18, 6]} /><meshLambertMaterial color="#5a5a5a" flatShading /></mesh>
-        <mesh position={[0, 0.14, -0.07]}><sphereGeometry args={[0.06, 6, 4]} /><meshLambertMaterial color="#777" flatShading /></mesh>
-        <mesh position={[0, 0.2, -0.03]}><sphereGeometry args={[0.055, 6, 4]} /><meshLambertMaterial color="#f0f0f0" flatShading /></mesh>
-        <mesh position={[-0.03, 0.16, -0.05]}><sphereGeometry args={[0.04, 4, 3]} /><meshLambertMaterial color="#888" flatShading /></mesh>
-        <mesh position={[0.03, 0.17, -0.06]}><sphereGeometry args={[0.035, 4, 3]} /><meshLambertMaterial color="#999" flatShading /></mesh>
+        <mesh position={[0, 0.04, -0.04]} rotation={[0.6, 0, 0]}>
+          <capsuleGeometry args={[0.038, 0.1, 16, 24]} />
+          <meshStandardMaterial color="#6b6b6b" roughness={0.85} />
+        </mesh>
+        <mesh position={[0, 0.14, -0.07]}>
+          <sphereGeometry args={[0.055, 24, 20]} />
+          <meshStandardMaterial color="#888" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, 0.2, -0.03]}>
+          <sphereGeometry args={[0.05, 24, 20]} />
+          <meshStandardMaterial color="#f0f0f0" roughness={0.9} />
+        </mesh>
+        <mesh position={[-0.03, 0.16, -0.05]}>
+          <sphereGeometry args={[0.035, 20, 16]} />
+          <meshStandardMaterial color="#999" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.03, 0.17, -0.06]}>
+          <sphereGeometry args={[0.03, 20, 16]} />
+          <meshStandardMaterial color="#aaa" roughness={0.9} />
+        </mesh>
       </group>
     </group>
   );

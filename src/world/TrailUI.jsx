@@ -62,28 +62,18 @@ export default function TrailUI({ currentStage, isMobile }) {
     <>
       {/* Controls hint — always visible, fades after first move */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-[2] pointer-events-none">
-        <div className="bg-black/40 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm">
-          {isMobile ? "Touch & drag to ride" : "WASD / Arrow keys to ride"}
-        </div>
-      </div>
-
-      {/* Minimap */}
-      <div className="absolute top-4 right-4 z-[2] pointer-events-none">
-        <div className="bg-black/30 backdrop-blur-sm rounded-lg px-3 py-2 text-white text-xs">
-          <span className="opacity-60">Trail Stop: </span>
-          <span className="font-medium">
-            {content ? `${content.emoji} ${content.subtitle}` : "🛤️ Exploring..."}
-          </span>
+        <div className="bg-black/20 backdrop-blur-sm text-white/80 px-4 py-2 rounded-full text-xs sm:text-sm">
+          {isMobile ? "Swipe to ride" : "WASD / Arrow keys to ride"}
         </div>
       </div>
 
       {/* Stop content overlay */}
       <div
-        className={`absolute top-28 left-0 right-0 z-[1] flex items-center justify-center transition-all duration-500 ${
+        className={`absolute top-20 sm:top-28 left-0 right-0 z-[1] flex items-center justify-center transition-all duration-500 ${
           visible && content ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 pointer-events-none"
         }`}
       >
-        <div className="bg-white/90 backdrop-blur-md max-w-md mx-4 rounded-2xl shadow-xl p-6 border border-white/50">
+        <div className="bg-white/60 backdrop-blur-sm max-w-xs sm:max-w-md mx-4 rounded-2xl shadow-lg p-4 sm:p-6 border border-white/30">
           <div className="text-3xl mb-2">{content?.emoji}</div>
           <p className="text-sm font-medium text-blue-600 uppercase tracking-wider mb-1">
             {content?.subtitle}

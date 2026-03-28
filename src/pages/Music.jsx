@@ -32,7 +32,7 @@ const Music = () => {
       <div className='py-36'>
 
       <div className='flex-1 min-w-[50%] flex flex-col'>
-        <h1 className='head-text'>FA: Duet with guitar and cello</h1>
+        <h1 className='head-text'>FA: Guitar, cello, and voice tribulations</h1>
         Experiencing music from medieval times, Scarborough Fair is a traditional English ballad.
         Then we explore the sound of the cello and guitar in a duet giving a new perspective to the song.
         <br />
